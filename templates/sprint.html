@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>12-недельный спринт</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            min-height: 100vh;
+            background: url('{{ url_for('static', filename='8.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+            color: #1a1a2e;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.04);
+            z-index: 0;
+        }
+
+        .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Навигация */
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 700 !important;
+        }
+        .nav-custom .btn i { margin-right: 8px; }
+        .nav-custom .btn-outline-success { color: #1a1a2e; border-color: rgba(26,26,46,0.15); }
+        .nav-custom .btn-outline-success:hover { background: #b35a6c; color: white; border-color: #b35a6c; }
+        .nav-custom .btn-success { background: #b35a6c; border-color: #b35a6c; color: white; }
+        .nav-custom .btn-success:hover { background: #9a4a5a; }
+
+        /* Заголовок */
+        .page-header {
+            text-align: center;
+            padding: 16px 0 20px;
+        }
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800 !important;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+        }
+        .page-header h1 span { color: #b35a6c; }
+        .page-header .subtitle {
+            font-size: 0.9rem;
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600 !important;
+        }
+
+        /* Карточки */
+        .card-glass {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+            margin-bottom: 16px;
+        }
+        .card-glass:hover { background: rgba(255,255,255,0.10); }
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 700 !important;
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title i { color: #b35a6c; font-size: 1rem; }
+
+        /* ============================================================
+           ГЛАВНЫЙ БЛОК СПРИНТА
+           ============================================================ */
+        .sprint-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .sprint-header { grid-template-columns: 1fr; }
+        }
+
+        .sprint-week-display {
+            text-align: center;
+            padding: 8px 0;
+        }
+        .sprint-week-display .week-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+            line-height: 1;
+        }
+        .sprint-week-display .week-label {
+            font-size: 0.7rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sprint-week-display .week-quote {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+            margin-top: 4px;
+        }
+
+        /* Шкала недель */
+        .week-track {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 8px 0;
+        }
+        .week-track .wt-item {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .week-track .wt-item.past {
+            background: #b35a6c;
+            color: white;
+            opacity: 0.5;
+        }
+        .week-track .wt-item.current {
+            background: #b35a6c;
+            color: white;
+            box-shadow: 0 0 20px rgba(179,90,108,0.3);
+            transform: scale(1.1);
+        }
+        .week-track .wt-item.future {
+            background: rgba(26,26,46,0.06);
+            color: rgba(26,26,46,0.2);
+            border: 1px solid rgba(26,26,46,0.06);
+        }
+
+        /* Прогресс */
+        .progress-sprint {
+            margin: 8px 0;
+        }
+        .progress-sprint .ps-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+        }
+        .progress-sprint .ps-bar {
+            height: 12px;
+            background: rgba(26,26,46,0.06);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .progress-sprint .ps-bar .ps-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #b35a6c, #c66f80, #e8afba);
+            transition: width 0.8s ease;
+        }
+
+        /* Цель спринта */
+        .sprint-goal {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: center;
+        }
+        .sprint-goal .sg-label {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.3);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sprint-goal .sg-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            color: #1a1a2e;
+        }
+        .sprint-goal .sg-progress {
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+
+        /* ============================================================
+           ЕЖЕНЕДЕЛЬНЫЕ ЗАДАЧИ
+           ============================================================ */
+        .tasks-week {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        @media (max-width: 768px) {
+            .tasks-week { grid-template-columns: 1fr; }
+        }
+
+        .task-day {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 10px 14px;
+            border-left: 3px solid #b35a6c;
+            transition: all 0.3s ease;
+        }
+        .task-day:hover { background: rgba(255,255,255,0.06); }
+        .task-day .td-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .task-day .td-header .td-day {
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+        }
+        .task-day .td-header .td-check {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.3);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .task-day .td-header .td-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #b35a6c;
+            cursor: pointer;
+        }
+        .task-day .td-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            min-height: 20px;
+        }
+        .task-day .td-text.done {
+            text-decoration: line-through;
+            opacity: 0.4;
+        }
+        .task-day .td-input {
+            border: none;
+            background: transparent;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            width: 100%;
+            padding: 2px 0;
+        }
+        .task-day .td-input:focus {
+            outline: none;
+            border-bottom: 1px dashed #b35a6c;
+        }
+        .task-day .td-input::placeholder {
+            color: rgba(26,26,46,0.2);
+        }
+
+        /* ============================================================
+           ГРАФИК
+           ============================================================ */
+        .chart-sprint {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            padding: 8px 0;
+        }
+        .chart-sprint .cs-bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .chart-sprint .cs-bar-wrapper .cs-bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+            transition: height 0.8s ease;
+        }
+        .chart-sprint .cs-bar-wrapper .cs-label {
+            font-size: 0.5rem;
+            color: rgba(26,26,46,0.3);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .chart-sprint .cs-bar-wrapper .cs-value {
+            font-size: 0.45rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .chart-sprint .cs-bar-wrapper:hover .cs-value { opacity: 1; }
+
+        /* ============================================================
+           АРХИВ
+           ============================================================ */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        .archive-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border-left: 3px solid #c66f80;
+            transition: all 0.3s ease;
+        }
+        .archive-item:hover { background: rgba(255,255,255,0.06); }
+        .archive-item .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .archive-item .ai-header .ai-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+        .archive-item .ai-header .ai-delete {
+            background: none;
+            border: none;
+            color: rgba(26,26,46,0.2);
+            cursor: pointer;
+        }
+        .archive-item .ai-header .ai-delete:hover { color: #b35a6c; }
+        .archive-item .ai-goal {
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            color: #1a1a2e;
+            margin-top: 2px;
+        }
+        .archive-item .ai-result {
+            font-size: 0.7rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: rgba(26,26,46,0.2);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Кнопки */
+        .btn-custom {
+            border-radius: 40px;
+            padding: 6px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-pink {
+            background: #b35a6c;
+            color: white;
+        }
+        .btn-pink:hover {
+            background: #9a4a5a;
+            color: white;
+            transform: translateY(-1px);
+        }
+        .btn-outline-pink {
+            background: transparent;
+            color: #b35a6c;
+            border: 1px solid #b35a6c;
+        }
+        .btn-outline-pink:hover {
+            background: #b35a6c;
+            color: white;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.6rem; }
+            .sprint-week-display .week-number { font-size: 2.5rem; }
+            .card-glass { padding: 14px 16px; }
+            .nav-custom .btn { font-size: 0.6rem; padding: 4px 8px; }
+            .chart-sprint { height: 120px; }
+            .week-track .wt-item { width: 22px; height: 22px; font-size: 0.4rem; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-glass { animation: fadeIn 0.4s ease; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26,26,46,0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-left: 4px solid #b35a6c;
+            animation: slideUp 0.4s ease;
+        }
+        .notification.hide {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Навигация -->
+    <nav class="nav-custom">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits') }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals') }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('ege_center') }}" class="btn btn-outline-success">
+                <i class="fas fa-star"></i> ЕГЭ Центр
+            </a>
+            <a href="{{ url_for('ege_planner') }}" class="btn btn-outline-success">
+                <i class="fas fa-rocket"></i> ЕГЭ Планер
+            </a>
+            <a href="{{ url_for('ege_calendar_page') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-check"></i> ЕГЭ Календарь
+            </a>
+            <a href="{{ url_for('ege_exams') }}" class="btn btn-outline-success">
+                <i class="fas fa-trophy"></i> Пробники
+            </a>
+            <a href="{{ url_for('sprint') }}" class="btn btn-success">
+                <i class="fas fa-running"></i> Спринт
+            </a>
+            <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <h1>🏃‍♀️ <span>12-недельный</span> спринт</h1>
+        <div class="subtitle">Маленькие шаги каждый день — большой результат через 12 недель</div>
+    </div>
+
+    <!-- ============================================================
+         ГЛАВНЫЙ БЛОК
+         ============================================================ -->
+    <div class="sprint-header">
+        <!-- Левая часть: неделя и шкала -->
+        <div class="card-glass">
+            <div class="card-title"><i class="fas fa-calendar-week"></i> Текущий спринт</div>
+            <div class="sprint-week-display">
+                <div class="week-number" id="currentWeek">1</div>
+                <div class="week-label">Неделя из 12</div>
+                <div class="week-quote" id="weekQuote">"Путь в 1000 миль начинается с первого шага."</div>
+            </div>
+            <div class="week-track" id="weekTrack">
+                <!-- генерируется JS -->
+            </div>
+            <div class="progress-sprint">
+                <div class="ps-header">
+                    <span>Прогресс спринта</span>
+                    <span id="sprintProgressText">0%</span>
+                </div>
+                <div class="ps-bar">
+                    <div class="ps-fill" id="sprintProgressFill" style="width: 0%;"></div>
+                </div>
+            </div>
+            <div class="sprint-goal">
+                <div class="sg-label">🎯 Цель спринта</div>
+                <div class="sg-text" id="sprintGoalText">Достичь 80 баллов по математике</div>
+                <div class="sg-progress" id="sprintGoalProgress">Прогресс: 0%</div>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                <button class="btn-custom btn-pink" onclick="saveSprintGoal()">💾 Сохранить цель</button>
+                <button class="btn-custom btn-outline-pink" onclick="completeSprint()">🏁 Завершить спринт</button>
+            </div>
+        </div>
+
+        <!-- Правая часть: статистика -->
+        <div class="card-glass">
+            <div class="card-title"><i class="fas fa-chart-simple"></i> Статистика</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <div style="text-align:center; background:rgba(255,255,255,0.03); border-radius:12px; padding:10px;">
+                    <div style="font-size:1.5rem; font-weight:900; font-family:'Inter',sans-serif; color:#b35a6c;" id="tasksDone">0</div>
+                    <div style="font-size:0.55rem; color:rgba(26,26,46,0.3); font-family:'Inter',sans-serif; font-weight:700; text-transform:uppercase;">Задач выполнено</div>
+                </div>
+                <div style="text-align:center; background:rgba(255,255,255,0.03); border-radius:12px; padding:10px;">
+                    <div style="font-size:1.5rem; font-weight:900; font-family:'Inter',sans-serif; color:#4a6644;" id="streakSprint">0</div>
+                    <div style="font-size:0.55rem; color:rgba(26,26,46,0.3); font-family:'Inter',sans-serif; font-weight:700; text-transform:uppercase;">Дней подряд</div>
+                </div>
+                <div style="text-align:center; background:rgba(255,255,255,0.03); border-radius:12px; padding:10px;">
+                    <div style="font-size:1.5rem; font-weight:900; font-family:'Inter',sans-serif; color:#c66f80;" id="weeksDone">0</div>
+                    <div style="font-size:0.55rem; color:rgba(26,26,46,0.3); font-family:'Inter',sans-serif; font-weight:700; text-transform:uppercase;">Недель завершено</div>
+                </div>
+                <div style="text-align:center; background:rgba(255,255,255,0.03); border-radius:12px; padding:10px;">
+                    <div style="font-size:1.5rem; font-weight:900; font-family:'Inter',sans-serif; color:#899464;" id="daysRemaining">0</div>
+                    <div style="font-size:0.55rem; color:rgba(26,26,46,0.3); font-family:'Inter',sans-serif; font-weight:700; text-transform:uppercase;">Дней до финиша</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         ЕЖЕНЕДЕЛЬНЫЕ ЗАДАЧИ
+         ============================================================ -->
+    <div class="card-glass">
+        <div class="card-title"><i class="fas fa-list-check"></i> Задачи на эту неделю</div>
+        <div class="tasks-week" id="tasksWeek">
+            <!-- генерируется JS -->
+        </div>
+    </div>
+
+    <!-- ============================================================
+         ГРАФИК ПРОГРЕССА
+         ============================================================ -->
+    <div class="card-glass">
+        <div class="card-title"><i class="fas fa-chart-line"></i> Прогресс по неделям</div>
+        <div class="chart-sprint" id="chartSprint">
+            <!-- генерируется JS -->
+        </div>
+    </div>
+
+    <!-- ============================================================
+         АРХИВ
+         ============================================================ -->
+    <div class="card-glass">
+        <div class="card-title"><i class="fas fa-archive"></i> Архив спринтов</div>
+        <div class="archive-grid" id="archiveGrid">
+            <!-- генерируется JS -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ============================================================
+    // ДАННЫЕ
+    // ============================================================
+    let sprintData = {
+        currentWeek: 1,
+        startDate: null,
+        goal: "Достичь 80 баллов по математике",
+        goalProgress: 0,
+        tasks: {
+            monday: { text: "", done: false },
+            tuesday: { text: "", done: false },
+            wednesday: { text: "", done: false },
+            thursday: { text: "", done: false },
+            friday: { text: "", done: false },
+            saturday: { text: "", done: false },
+            sunday: { text: "Отдых 🧘‍♀️", done: false }
+        },
+        history: [], // { goal, result, weeks, date }
+        weeklyProgress: [] // массив из 12 чисел (проценты)
+    };
+
+    const dayNames = {
+        monday: 'Пн',
+        tuesday: 'Вт',
+        wednesday: 'Ср',
+        thursday: 'Чт',
+        friday: 'Пт',
+        saturday: 'Сб',
+        sunday: 'Вс'
+    };
+
+    const dayNamesFull = {
+        monday: 'Понедельник',
+        tuesday: 'Вторник',
+        wednesday: 'Среда',
+        thursday: 'Четверг',
+        friday: 'Пятница',
+        saturday: 'Суббота',
+        sunday: 'Воскресенье'
+    };
+
+    const quotes = [
+        '"Путь в 1000 миль начинается с первого шага." — Лао-Цзы',
+        '"Маленькие ежедневные усилия приводят к большим результатам." — Джон Максвелл',
+        '"Ты не обязан быть великим, чтобы начать, но ты обязан начать, чтобы стать великим." — Зиг Зиглар',
+        '"Секрет успеха в том, чтобы начать." — Марк Твен',
+        '"Каждый день ты становишься лучше, чем вчера." — Тони Роббинс',
+        '"Дисциплина — это мост между целями и достижениями." — Джим Рон',
+        '"Ты способен на большее, чем думаешь." — неизвестно',
+        '"Вдохновение приходит во время работы." — Пабло Пикассо',
+    ];
+
+    // ============================================================
+    // ЗАГРУЗКА / СОХРАНЕНИЕ
+    // ============================================================
+    function loadData() {
+        const saved = localStorage.getItem('sprint_data');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                sprintData = { ...sprintData, ...data };
+            } catch(e) {}
+        }
+        // Инициализируем weeklyProgress, если пусто
+        if (sprintData.weeklyProgress.length === 0) {
+            sprintData.weeklyProgress = Array(12).fill(0);
+        }
+        // Инициализируем дату начала
+        if (!sprintData.startDate) {
+            sprintData.startDate = new Date().toISOString();
+        }
+        // Обновляем текущую неделю на основе даты начала
+        updateCurrentWeek();
+    }
+
+    function saveData() {
+        localStorage.setItem('sprint_data', JSON.stringify(sprintData));
+    }
+
+    function updateCurrentWeek() {
+        const start = new Date(sprintData.startDate);
+        const now = new Date();
+        const diffDays = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+        const week = Math.min(Math.floor(diffDays / 7) + 1, 12);
+        sprintData.currentWeek = Math.max(week, 1);
+    }
+
+    // ============================================================
+    // РЕНДЕР
+    // ============================================================
+    function renderAll() {
+        renderWeekTrack();
+        renderWeekInfo();
+        renderTasks();
+        renderChart();
+        renderArchive();
+        updateStats();
+        saveData();
+    }
+
+    function renderWeekTrack() {
+        const container = document.getElementById('weekTrack');
+        const current = sprintData.currentWeek;
+        let html = '';
+        for (let i = 1; i <= 12; i++) {
+            let cls = 'wt-item';
+            if (i < current) cls += ' past';
+            else if (i === current) cls += ' current';
+            else cls += ' future';
+            html += `<div class="${cls}">${i}</div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    function renderWeekInfo() {
+        document.getElementById('currentWeek').textContent = sprintData.currentWeek;
+        const progress = Math.round((sprintData.currentWeek / 12) * 100);
+        document.getElementById('sprintProgressText').textContent = progress + '%';
+        document.getElementById('sprintProgressFill').style.width = progress + '%';
+
+        // Цитата
+        const quoteIndex = (sprintData.currentWeek - 1) % quotes.length;
+        document.getElementById('weekQuote').textContent = quotes[quoteIndex] || quotes[0];
+
+        // Цель
+        document.getElementById('sprintGoalText').textContent = sprintData.goal || 'Установи цель спринта!';
+        document.getElementById('sprintGoalProgress').textContent = 'Прогресс: ' + Math.round(sprintData.goalProgress) + '%';
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('tasksWeek');
+        const tasks = sprintData.tasks;
+        let html = '';
+        for (const [key, day] of Object.entries(tasks)) {
+            const isDone = day.done || false;
+            const text = day.text || '';
+            html += `
+                <div class="task-day">
+                    <div class="td-header">
+                        <span class="td-day">${dayNamesFull[key]}</span>
+                        <span class="td-check">
+                            <input type="checkbox" ${isDone ? 'checked' : ''}
+                                   onchange="toggleTask('${key}')">
+                            <span>Вып.</span>
+                        </span>
+                    </div>
+                    <div class="td-text ${isDone ? 'done' : ''}">
+                        <input class="td-input" type="text" value="${text}"
+                               placeholder="Задача на ${dayNamesFull[key]}..."
+                               onchange="updateTaskText('${key}', this.value)">
+                    </div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    function renderChart() {
+        const container = document.getElementById('chartSprint');
+        const data = sprintData.weeklyProgress;
+        const maxVal = Math.max(...data, 1);
+        let html = '';
+        for (let i = 0; i < 12; i++) {
+            const value = data[i] || 0;
+            const height = (value / 100) * 140;
+            const isPast = i < sprintData.currentWeek;
+            const color = isPast ? '#b35a6c' : 'rgba(26,26,46,0.06)';
+            html += `
+                <div class="cs-bar-wrapper">
+                    <div class="cs-bar" style="height:${Math.max(height, 4)}px; background:${color};">
+                        <span class="cs-value">${value}%</span>
+                    </div>
+                    <div class="cs-label">${i+1}</div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    function renderArchive() {
+        const container = document.getElementById('archiveGrid');
+        const history = sprintData.history || [];
+        if (history.length === 0) {
+            container.innerHTML = '<div class="empty-state">📭 Нет завершённых спринтов. Действуй!</div>';
+            return;
+        }
+        let html = '';
+        history.slice().reverse().forEach((item, index) => {
+            const realIndex = history.length - 1 - index;
+            html += `
+                <div class="archive-item">
+                    <div class="ai-header">
+                        <span class="ai-title">🏁 Спринт #${realIndex + 1}</span>
+                        <button class="ai-delete" onclick="deleteArchive(${realIndex})">×</button>
+                    </div>
+                    <div class="ai-goal">${item.goal || 'Без цели'}</div>
+                    <div class="ai-result">${item.result || 'Итоги не записаны'}</div>
+                    <div style="font-size:0.6rem; color:rgba(26,26,46,0.2); font-family:'Inter',sans-serif; margin-top:4px;">
+                        ${item.weeks || 12} недель • ${item.date || ''}
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function updateStats() {
+        const tasks = Object.values(sprintData.tasks);
+        const done = tasks.filter(t => t.done).length;
+        document.getElementById('tasksDone').textContent = done;
+
+        const weeks = sprintData.currentWeek - 1;
+        document.getElementById('weeksDone').textContent = weeks;
+
+        document.getElementById('daysRemaining').textContent = (12 - sprintData.currentWeek) * 7;
+
+        // Считаем непрерывную серию
+        let streak = 0;
+        const now = new Date();
+        for (let i = 0; i < 30; i++) {
+            const d = new Date(now);
+            d.setDate(d.getDate() - i);
+            const key = d.toISOString().split('T')[0];
+            // Проверяем, есть ли завершённые задачи в этот день
+            const hasActivity = Object.values(sprintData.tasks).some(t => t.done && t.text);
+            if (hasActivity) { streak++; } else { break; }
+        }
+        document.getElementById('streakSprint').textContent = streak;
+    }
+
+    // ============================================================
+    // ДЕЙСТВИЯ
+    // ============================================================
+    function toggleTask(day) {
+        sprintData.tasks[day].done = !sprintData.tasks[day].done;
+        renderTasks();
+        updateStats();
+        saveData();
+
+        // Обновляем прогресс недели
+        updateWeeklyProgress();
+    }
+
+    function updateTaskText(day, text) {
+        sprintData.tasks[day].text = text;
+        saveData();
+    }
+
+    function updateWeeklyProgress() {
+        const tasks = Object.values(sprintData.tasks);
+        const total = tasks.length;
+        const done = tasks.filter(t => t.done && t.text).length;
+        const progress = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        const weekIndex = sprintData.currentWeek - 1;
+        if (weekIndex >= 0 && weekIndex < 12) {
+            sprintData.weeklyProgress[weekIndex] = progress;
+        }
+        renderChart();
+        saveData();
+    }
+
+    function saveSprintGoal() {
+        const newGoal = prompt('Введите цель на этот спринт:', sprintData.goal || 'Достичь 80 баллов по математике');
+        if (newGoal !== null && newGoal.trim() !== '') {
+            sprintData.goal = newGoal.trim();
+            renderWeekInfo();
+            saveData();
+            showNotification('✅ Цель спринта сохранена! 🎯', '#b35a6c');
+        }
+    }
+
+    function completeSprint() {
+        if (sprintData.currentWeek < 12) {
+            if (!confirm('Спринт ещё не завершён (неделя ' + sprintData.currentWeek + '/12). Завершить сейчас?')) {
+                return;
+            }
+        }
+
+        const result = prompt('Запиши итоги спринта:\nЧто получилось? Что не получилось?', 'Достигнут прогресс!');
+        if (result === null) return;
+
+        const historyItem = {
+            goal: sprintData.goal,
+            result: result || 'Итоги не записаны',
+            weeks: sprintData.currentWeek,
+            date: new Date().toLocaleDateString('ru-RU')
+        };
+
+        sprintData.history.push(historyItem);
+
+        // Сброс для нового спринта
+        sprintData.currentWeek = 0;
+        sprintData.startDate = new Date().toISOString();
+        sprintData.goal = '';
+        sprintData.goalProgress = 0;
+        sprintData.weeklyProgress = Array(12).fill(0);
+        for (const key in sprintData.tasks) {
+            sprintData.tasks[key] = { text: '', done: false };
+        }
+
+        renderAll();
+        showNotification('🏁 Спринт завершён! Ты молодец! 🌟', '#4a6644');
+    }
+
+    function deleteArchive(index) {
+        if (confirm('Удалить запись из архива?')) {
+            sprintData.history.splice(index, 1);
+            renderArchive();
+            saveData();
+            showNotification('🗑️ Запись удалена', '#b35a6c');
+        }
+    }
+
+    // ============================================================
+    // УВЕДОМЛЕНИЯ
+    // ============================================================
+    function showNotification(message, color = '#b35a6c') {
+        const old = document.querySelector('.notification');
+        if (old) old.remove();
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.style.borderLeftColor = color;
+        notif.textContent = message;
+        document.body.appendChild(notif);
+        setTimeout(() => {
+            notif.classList.add('hide');
+            setTimeout(() => notif.remove(), 500);
+        }, 2500);
+    }
+
+    // ============================================================
+    // АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ
+    // ============================================================
+    function autoUpdate() {
+        const oldWeek = sprintData.currentWeek;
+        updateCurrentWeek();
+        if (oldWeek !== sprintData.currentWeek) {
+            renderAll();
+            showNotification('📅 Новая неделя спринта! Время ставить задачи! 🚀', '#b35a6c');
+        }
+    }
+
+    // ============================================================
+    // ЗАПУСК
+    // ============================================================
+    function init() {
+        loadData();
+        renderAll();
+        console.log('✅ 12-недельный спринт загружен!');
+
+        // Автообновление раз в час
+        setInterval(autoUpdate, 3600000);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

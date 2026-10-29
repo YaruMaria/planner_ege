@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Управление делами</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #e8efe2;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #25391a;
+            padding: 20px;
+        }
+        .tasks-list .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card {
+            box-shadow: 0 0 10px #94ad6e44;
+        }
+        .btn-color {
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mb-4">Управление делами</h1>
+
+    <!-- Форма добавления дела -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Добавить новое дело</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('manage_custom_tasks') }}">
+                <div class="mb-3">
+                    <label for="taskNameInput" class="form-label">Название дела</label>
+                    <input type="text" class="form-control" id="taskNameInput" name="task_name"
+                           placeholder="Например: Поход в кино, Уборка, Встреча с друзьями" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Выберите цвет</label>
+                    <div>
+                        {% for name, hex in palette.items() %}
+                        <input type="radio" class="btn-check" name="task_color" id="task-color-{{ loop.index }}" value="{{ hex }}"
+                               {% if loop.first %}checked{% endif %} required>
+                        <label class="btn btn-outline-success me-2 mb-2 btn-color" for="task-color-{{ loop.index }}"
+                               style="background-color: {{ hex }}; color: {% if hex in ['#3d5526', '#25391a', '#2f4020', '#1a2e15', '#0f1f0a'] %}white{% else %}black{% endif %};">
+                            {{ name }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Добавить дело</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Список дел -->
+    <div class="tasks-list">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Список дел</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% if custom_tasks %}
+                        {% for task in custom_tasks %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                <span class="badge rounded-pill" style="background-color: {{ task.color }}; color: {% if task.color in ['#3d5526', '#25391a', '#2f4020', '#1a2e15', '#0f1f0a'] %}white{% else %}black{% endif %};">
+                                    {{ task.name }}
+                                </span>
+                            </span>
+                            <form method="POST" action="{{ url_for('remove_task', task_name=task.name) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item text-muted">Пока нет дел. Добавьте первое дело!</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Вернуться к расписанию</a>
+        <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">Управление учениками</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

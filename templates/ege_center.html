@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ЕГЭ Центр</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            min-height: 100vh;
+            background: url('{{ url_for('static', filename='8.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+            color: #1a1a2e;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.04);
+            z-index: 0;
+        }
+
+        /* Все тексты жирнее и контрастнее */
+        * { font-weight: 500; }
+        h1, h2, h3, h4, h5, .title, .card-title, .tracker-header,
+        .progress-text, .num, .stat-item .num, .stat-item .label,
+        .quote-text, .quote-author, .mood-btn, .error-text,
+        .record-num, .record-label, .cp-header, .folder-name {
+            font-weight: 700 !important;
+        }
+
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        /* Навигация */
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 700 !important;
+        }
+        .nav-custom .btn i { margin-right: 8px; }
+        .nav-custom .btn-outline-success { color: #1a1a2e; border-color: rgba(26,26,46,0.15); }
+        .nav-custom .btn-outline-success:hover { background: #b35a6c; color: white; border-color: #b35a6c; }
+        .nav-custom .btn-success { background: #b35a6c; border-color: #b35a6c; color: white; }
+        .nav-custom .btn-success:hover { background: #9a4a5a; }
+
+        /* Заголовок */
+        .hero-banner {
+            text-align: center;
+            padding: 16px 0 20px;
+        }
+        .hero-banner h1 {
+            font-size: 2.2rem;
+            font-weight: 800 !important;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-banner h1 span { color: #b35a6c; }
+        .hero-banner .subtitle {
+            font-size: 0.9rem;
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600 !important;
+        }
+
+        /* ============================================================
+           ГРАФИК АКТИВНОСТИ
+           ============================================================ */
+        .chart-section {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 20px;
+        }
+        .chart-section .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .chart-section .chart-header .title {
+            font-size: 0.85rem;
+            font-weight: 700 !important;
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .chart-section .chart-header .title i { color: #b35a6c; margin-right: 6px; }
+
+        .subject-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .subject-tab {
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700 !important;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .subject-tab:hover { background: rgba(255,255,255,0.10); }
+        .subject-tab.active {
+            background: rgba(179,90,108,0.15);
+            border-color: #b35a6c;
+            color: #b35a6c;
+        }
+        .subject-tab .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .period-tabs {
+            display: flex;
+            gap: 6px;
+        }
+        .period-tab {
+            padding: 4px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700 !important;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .period-tab:hover { background: rgba(255,255,255,0.10); }
+        .period-tab.active {
+            background: rgba(179,90,108,0.15);
+            border-color: #b35a6c;
+            color: #b35a6c;
+        }
+
+        /* График */
+        .chart-container {
+            padding: 8px 0;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 50px repeat(7, 1fr);
+            gap: 4px;
+            align-items: end;
+            min-height: 200px;
+            padding-bottom: 4px;
+        }
+        .chart-grid .y-label {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.3);
+            font-family: 'Inter', sans-serif;
+            text-align: right;
+            padding-right: 6px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-weight: 600 !important;
+        }
+        .chart-grid .day-label {
+            font-size: 0.65rem;
+            font-weight: 700 !important;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            padding-top: 6px;
+        }
+        .chart-grid .day-label.today { color: #b35a6c; }
+
+        .bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            min-height: 160px;
+        }
+        .bar-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+        .bar-container .bar {
+            width: 70%;
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+            transition: height 0.6s ease;
+            position: relative;
+        }
+        .bar-container .bar .bar-value {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            font-weight: 800 !important;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .bar-container:hover .bar-value { opacity: 1; }
+        .bar-container .bar-input {
+            width: 40px;
+            border: 1px solid rgba(26,26,46,0.08);
+            border-radius: 6px;
+            padding: 1px 4px;
+            font-size: 0.6rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700 !important;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            color: #1a1a2e;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        .bar-container .bar-input:focus {
+            outline: none;
+            border-color: #b35a6c;
+            background: rgba(255,255,255,0.1);
+        }
+        .bar-container .bar-input.show { display: block; }
+
+        /* Суммарная статистика */
+        .stats-row {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            margin-top: 12px;
+        }
+        .stats-row .stat-item {
+            text-align: center;
+        }
+        .stats-row .stat-item .num {
+            font-size: 1.4rem;
+            font-weight: 900 !important;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+        .stats-row .stat-item .label {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700 !important;
+        }
+
+        /* ============================================================
+           ОСНОВНЫЕ КАРТОЧКИ (объединённые)
+           ============================================================ */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .card-glass {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+        }
+        .card-glass:hover { background: rgba(255,255,255,0.10); }
+        .card-glass .card-title {
+            font-size: 0.8rem;
+            font-weight: 700 !important;
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-glass .card-title i { color: #b35a6c; font-size: 0.9rem; }
+
+        /* Трекер 100 баллов */
+        .tracker-100 .tracker-bar {
+            height: 18px;
+            background: rgba(26,26,46,0.06);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .tracker-100 .tracker-bar .fill {
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #b35a6c, #c66f80, #e8afba);
+            transition: width 1s ease;
+        }
+        .tracker-100 .tracker-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 700 !important;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+        }
+
+        /* Прогресс по предметам (компактный) */
+        .subject-progress-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 16px;
+        }
+        .subject-progress-compact .sp-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .subject-progress-compact .sp-item .sp-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .subject-progress-compact .sp-item .sp-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            flex: 1;
+        }
+        .subject-progress-compact .sp-item .sp-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(26,26,46,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            min-width: 40px;
+        }
+        .subject-progress-compact .sp-item .sp-bar .sp-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.8s ease;
+        }
+        .subject-progress-compact .sp-item .sp-percent {
+            font-size: 0.6rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: rgba(26,26,46,0.4);
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Марафон + Звёзды (объединены) */
+        .streak-stars {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .streak-stars .streak-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .streak-stars .streak-block .streak-days {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+            line-height: 1;
+        }
+        .streak-stars .streak-block .streak-label {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .streak-stars .stars-block {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .streak-stars .stars-block .stars-count {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-family: 'Inter', sans-serif;
+            color: #e8afba;
+            line-height: 1;
+        }
+        .streak-stars .stars-block .stars-label {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .streak-grid {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .streak-grid .s-day {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .streak-grid .s-day.marked {
+            background: #b35a6c;
+            box-shadow: 0 2px 8px rgba(179,90,108,0.2);
+        }
+        .streak-grid .s-day.empty {
+            background: rgba(26,26,46,0.06);
+            border: 1px solid rgba(26,26,46,0.04);
+        }
+        .streak-grid .s-day.today {
+            border: 2px solid #b35a6c;
+        }
+
+        /* Личные рекорды (компактно) */
+        .records-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+        }
+        .records-compact .rc-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .records-compact .rc-item .rc-num {
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+        }
+        .records-compact .rc-item .rc-label {
+            font-size: 0.5rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Умная статистика (компактно) */
+        .smart-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+        }
+        .smart-compact .sc-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .smart-compact .sc-item .sc-emoji { font-size: 1rem; }
+        .smart-compact .sc-item .sc-text {
+            font-size: 0.6rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            margin-top: 2px;
+        }
+
+        /* Напоминания и ошибки (вместе) */
+        .reminders-errors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .reminders-errors .re-list {
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        .reminders-errors .re-list .re-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+        }
+        .reminders-errors .re-list .re-item .re-del {
+            background: none;
+            border: none;
+            color: rgba(26,26,46,0.2);
+            cursor: pointer;
+        }
+        .reminders-errors .re-list .re-item .re-del:hover { color: #b35a6c; }
+        .reminders-errors .re-empty {
+            text-align: center;
+            padding: 6px;
+            color: rgba(26,26,46,0.2);
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .reminders-errors .re-input-group {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .reminders-errors .re-input-group input {
+            flex: 1;
+            border: 1px solid rgba(26,26,46,0.06);
+            border-radius: 10px;
+            padding: 4px 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.04);
+            color: #1a1a2e;
+            font-weight: 500;
+        }
+        .reminders-errors .re-input-group input:focus { outline: none; border-color: #b35a6c; }
+        .reminders-errors .re-input-group button {
+            border: none;
+            border-radius: 10px;
+            padding: 4px 12px;
+            background: #b35a6c;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .reminders-errors .re-input-group button:hover { background: #9a4a5a; }
+
+        /* Достижения */
+        .achievements-compact {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .achievements-compact .ach-item {
+            text-align: center;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            min-width: 40px;
+            transition: all 0.3s ease;
+            opacity: 0.3;
+        }
+        .achievements-compact .ach-item.unlocked {
+            opacity: 1;
+            background: rgba(179,90,108,0.08);
+            border: 1px solid rgba(179,90,108,0.1);
+        }
+        .achievements-compact .ach-item .ach-emoji { font-size: 1.1rem; display: block; }
+        .achievements-compact .ach-item .ach-name {
+            font-size: 0.4rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Ежемесячные итоги */
+        .monthly-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .monthly-grid .mg-item textarea {
+            width: 100%;
+            border: 1px solid rgba(26,26,46,0.06);
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.04);
+            color: #1a1a2e;
+            resize: vertical;
+            min-height: 50px;
+            font-weight: 500;
+        }
+        .monthly-grid .mg-item textarea:focus { outline: none; border-color: #b35a6c; }
+        .monthly-grid .mg-item .mg-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        .monthly-grid .mg-item .mg-btn {
+            border: none;
+            border-radius: 40px;
+            padding: 2px 14px;
+            background: #b35a6c;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .monthly-grid .mg-item .mg-btn:hover { background: #9a4a5a; }
+        .monthly-grid .mg-item .mg-status {
+            font-size: 0.5rem;
+            color: rgba(26,26,46,0.3);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+        .monthly-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .monthly-tabs .mt-btn {
+            border: none;
+            border-radius: 40px;
+            padding: 3px 14px;
+            background: rgba(26,26,46,0.06);
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .monthly-tabs .mt-btn.active {
+            background: #b35a6c;
+            color: white;
+        }
+        .monthly-tabs .mt-btn:hover { background: rgba(179,90,108,0.15); }
+
+        /* Цитата */
+        .quote-box {
+            text-align: center;
+            padding: 4px 0;
+        }
+        .quote-box .quote-text {
+            font-size: 1rem;
+            font-style: italic;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700 !important;
+        }
+        .quote-box .quote-author {
+            font-size: 0.75rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            margin-top: 2px;
+            font-weight: 600 !important;
+        }
+
+        /* Pomodoro */
+        .pomodoro-compact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .pomodoro-compact .pomo-timer {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            letter-spacing: 2px;
+        }
+        .pomodoro-compact .pomo-status {
+            font-size: 0.65rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .pomodoro-compact .pomo-btns {
+            display: flex;
+            gap: 6px;
+        }
+        .pomodoro-compact .pomo-btns .pb-btn {
+            border: none;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .pb-start { background: #b35a6c; color: white; }
+        .pb-start:hover { background: #9a4a5a; }
+        .pb-pause { background: rgba(179,90,108,0.1); color: #b35a6c; }
+        .pb-pause:hover { background: rgba(179,90,108,0.2); }
+        .pb-reset { background: rgba(26,26,46,0.06); color: #1a1a2e; }
+        .pb-reset:hover { background: rgba(26,26,46,0.12); }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .monthly-grid { grid-template-columns: 1fr; }
+            .reminders-errors { grid-template-columns: 1fr; }
+            .records-compact { grid-template-columns: 1fr 1fr; }
+            .smart-compact { grid-template-columns: 1fr 1fr; }
+            .subject-progress-compact { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-banner h1 { font-size: 1.6rem; }
+            .chart-grid { grid-template-columns: 35px repeat(7, 1fr); gap: 2px; min-height: 150px; }
+            .bar-container .bar { width: 60%; }
+            .bar-container .bar-input { width: 30px; font-size: 0.45rem; }
+            .subject-tab { font-size: 0.6rem; padding: 4px 10px; }
+            .period-tab { font-size: 0.55rem; padding: 3px 10px; }
+            .chart-section { padding: 14px 16px; }
+            .card-glass { padding: 14px 16px; }
+            .nav-custom .btn { font-size: 0.6rem; padding: 4px 8px; }
+            .stats-row .stat-item .num { font-size: 1rem; }
+            .streak-stars { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .pomodoro-compact { flex-direction: column; gap: 8px; }
+            .records-compact { grid-template-columns: 1fr 1fr; }
+            .smart-compact { grid-template-columns: 1fr 1fr; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-glass, .chart-section { animation: fadeIn 0.4s ease; }
+        .bar { animation: fadeIn 0.6s ease; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26,26,46,0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-left: 4px solid #b35a6c;
+            animation: slideUp 0.4s ease;
+        }
+        .notification.hide {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Навигация -->
+    <nav class="nav-custom">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits') }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals') }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('ege_center') }}" class="btn btn-success">
+                <i class="fas fa-star"></i> ЕГЭ Центр
+            </a>
+            <a href="{{ url_for('ege_planner') }}" class="btn btn-outline-success">
+                <i class="fas fa-rocket"></i> ЕГЭ Планер
+            </a>
+            <a href="{{ url_for('ege_calendar_page') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-check"></i> ЕГЭ Календарь
+            </a>
+            <a href="{{ url_for('sprint') }}" class="btn btn-outline-success">
+    <i class="fas fa-running"></i> Спринт
+</a>
+            <a href="{{ url_for('ege_exams') }}" class="btn btn-outline-success">
+                <i class="fas fa-trophy"></i> Пробники
+            </a>
+            <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <!-- Заголовок -->
+    <div class="hero-banner">
+        <h1>📊 ЕГЭ <span>Центр</span></h1>
+        <div class="subtitle">Отслеживай свою активность каждый день</div>
+    </div>
+
+    <!-- ============================================================
+         ГРАФИК АКТИВНОСТИ
+         ============================================================ -->
+    <div class="chart-section">
+        <div class="chart-header">
+            <div class="title"><i class="fas fa-chart-bar"></i> График активности</div>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <div class="subject-tabs" id="subjectTabs">
+                    <button class="subject-tab active" data-subject="math">
+                        <span class="dot" style="background:#b35a6c;"></span>Математика
+                    </button>
+                    <button class="subject-tab" data-subject="russian">
+                        <span class="dot" style="background:#c66f80;"></span>Русский
+                    </button>
+                    <button class="subject-tab" data-subject="physics">
+                        <span class="dot" style="background:#4a6644;"></span>Физика
+                    </button>
+                    <button class="subject-tab" data-subject="informatics">
+                        <span class="dot" style="background:#899464;"></span>Информатика
+                    </button>
+                </div>
+                <div class="period-tabs" id="periodTabs">
+                    <button class="period-tab active" data-period="week">Неделя</button>
+                    <button class="period-tab" data-period="month">Месяц</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-grid" id="chartGrid">
+                <!-- Заполняется JS -->
+            </div>
+            <div class="stats-row" id="chartStats">
+                <div class="stat-item">
+                    <div class="num" id="totalHours">0</div>
+                    <div class="label">Всего часов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num" id="avgHours">0</div>
+                    <div class="label">Среднее в день</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num" id="bestDay">0</div>
+                    <div class="label">Лучший день (ч)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         ОСНОВНЫЕ КАРТОЧКИ (ДВЕ КОЛОНКИ)
+         ============================================================ -->
+    <div class="dashboard-grid">
+
+        <!-- ЛЕВАЯ КОЛОНКА -->
+        <div class="left-col">
+
+            <!-- Трекер 100 баллов -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-arrow-up"></i> Трекер к 100 баллам</div>
+                <div class="tracker-100">
+                    <div class="tracker-header">
+                        <span>Твой прогресс</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="tracker-bar">
+                        <div class="fill" id="trackerFill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Марафон + Звёзды -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-fire" style="color:#b35a6c;"></i> Марафон и звёзды</div>
+                <div class="streak-stars">
+                    <div class="streak-block">
+                        <span class="streak-days" id="streakDays">0</span>
+                        <div>
+                            <div class="streak-label">Дней подряд</div>
+                            <button class="btn btn-sm" style="background:#b35a6c; color:white; border-radius:40px; font-weight:700; font-size:0.6rem; border:none; padding:2px 12px; margin-top:2px;" onclick="markToday()">✅ Отметить</button>
+                        </div>
+                    </div>
+                    <div class="stars-block">
+                        <span class="stars-count" id="starCount">0</span>
+                        <div>
+                            <div class="stars-label">⭐ Звёзд</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="streak-grid" id="streakGrid"></div>
+            </div>
+
+            <!-- Личные рекорды -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-trophy" style="color:#b35a6c;"></i> Личные рекорды</div>
+                <div class="records-compact">
+                    <div class="rc-item"><div class="rc-num" style="color:#b35a6c;" id="recordScore">0</div><div class="rc-label">Лучший балл</div></div>
+                    <div class="rc-item"><div class="rc-num" style="color:#4a6644;" id="recordStreak">0</div><div class="rc-label">Макс. серия</div></div>
+                    <div class="rc-item"><div class="rc-num" style="color:#899464;" id="recordHours">0</div><div class="rc-label">Часов за неделю</div></div>
+                    <div class="rc-item"><div class="rc-num" style="color:#c66f80;" id="recordExams">0</div><div class="rc-label">Пробников</div></div>
+                </div>
+            </div>
+
+            <!-- Умная статистика -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-brain"></i> Умная статистика</div>
+                <div class="smart-compact">
+                    <div class="sc-item"><div class="sc-emoji">📚</div><div class="sc-text" id="statTasks">0 занятий</div></div>
+                    <div class="sc-item"><div class="sc-emoji">🏆</div><div class="sc-text" id="statExams">0 пробников</div></div>
+                    <div class="sc-item"><div class="sc-emoji">📈</div><div class="sc-text" id="statAvg">Ср. балл: 0</div></div>
+                    <div class="sc-item"><div class="sc-emoji">💪</div><div class="sc-text" id="statMotivation">🔥 Ты молодец!</div></div>
+                </div>
+            </div>
+
+            <!-- Прогресс по предметам -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-circle"></i> Прогресс по предметам</div>
+                <div class="subject-progress-compact" id="colorProgress">
+                    <div class="sp-item"><span class="sp-dot" style="background:#b35a6c;"></span><span class="sp-name">Математика</span><div class="sp-bar"><div class="sp-fill" id="cp-math-bar" style="width:0%; background:#b35a6c;"></div></div><span class="sp-percent" id="cp-math">0%</span></div>
+                    <div class="sp-item"><span class="sp-dot" style="background:#c66f80;"></span><span class="sp-name">Русский</span><div class="sp-bar"><div class="sp-fill" id="cp-russian-bar" style="width:0%; background:#c66f80;"></div></div><span class="sp-percent" id="cp-russian">0%</span></div>
+                    <div class="sp-item"><span class="sp-dot" style="background:#4a6644;"></span><span class="sp-name">Физика</span><div class="sp-bar"><div class="sp-fill" id="cp-physics-bar" style="width:0%; background:#4a6644;"></div></div><span class="sp-percent" id="cp-physics">0%</span></div>
+                    <div class="sp-item"><span class="sp-dot" style="background:#899464;"></span><span class="sp-name">Информатика</span><div class="sp-bar"><div class="sp-fill" id="cp-informatics-bar" style="width:0%; background:#899464;"></div></div><span class="sp-percent" id="cp-informatics">0%</span></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ПРАВАЯ КОЛОНКА -->
+        <div class="right-col">
+
+            <!-- Pomodoro -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-clock"></i> Таймер</div>
+                <div class="pomodoro-compact">
+                    <div>
+                        <div class="pomo-timer" id="pomodoroTimer">25:00</div>
+                        <div class="pomo-status" id="pomodoroStatus">⏳ Готов к работе</div>
+                    </div>
+                    <div class="pomo-btns">
+                        <button class="pb-btn pb-start" onclick="startPomodoro()"><i class="fas fa-play"></i></button>
+                        <button class="pb-btn pb-pause" onclick="pausePomodoro()"><i class="fas fa-pause"></i></button>
+                        <button class="pb-btn pb-reset" onclick="resetPomodoro()"><i class="fas fa-redo"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Напоминания + Ошибки -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-bell"></i> Напоминания и ошибки</div>
+                <div class="reminders-errors">
+                    <div>
+                        <div style="font-size:0.6rem; font-weight:700; font-family:'Inter',sans-serif; color:rgba(26,26,46,0.4); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:4px;">🔔 Напоминания</div>
+                        <div class="re-list" id="remindersList"><div class="re-empty">Нет напоминаний 📭</div></div>
+                        <div class="re-input-group">
+                            <input type="text" id="reminderInput" placeholder="Новое...">
+                            <button onclick="addReminder()">+</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.6rem; font-weight:700; font-family:'Inter',sans-serif; color:rgba(26,26,46,0.4); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:4px;">📝 Ошибки</div>
+                        <div class="re-list" id="errorsList"><div class="re-empty">Нет ошибок 🌟</div></div>
+                        <div class="re-input-group">
+                            <input type="text" id="errorInput" placeholder="Сложная тема...">
+                            <button onclick="addError()">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ежемесячные итоги и цели -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-calendar-check" style="color:#b35a6c;"></i> Итоги и цели</div>
+                <div class="monthly-tabs">
+                    <button class="mt-btn active" onclick="showMonthlyTab('current')">📝 Текущий</button>
+                    <button class="mt-btn" onclick="showMonthlyTab('archive')">📂 Архив</button>
+                </div>
+                <div id="monthlyCurrent">
+                    <div class="monthly-grid">
+                        <div class="mg-item">
+                            <div class="mg-label">📊 Итоги <span id="currentMonthLabel"></span></div>
+                            <textarea id="monthlySummary" placeholder="Что сделано? Победы?"></textarea>
+                            <button class="mg-btn" onclick="saveMonthlySummary()">💾 Сохранить</button>
+                            <div class="mg-status" id="monthlySummaryStatus"></div>
+                        </div>
+                        <div class="mg-item">
+                            <div class="mg-label">🎯 Цели на <span id="nextMonthLabel"></span></div>
+                            <textarea id="monthlyGoals" placeholder="Цели на месяц..."></textarea>
+                            <button class="mg-btn" onclick="saveMonthlyGoals()">💾 Сохранить</button>
+                            <div class="mg-status" id="monthlyGoalsStatus"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="monthlyArchive" style="display:none;">
+                    <div id="archiveList" style="max-height:150px; overflow-y:auto;">
+                        <div class="re-empty">Нет записей в архиве 📭</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Достижения -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-medal"></i> Достижения</div>
+                <div class="achievements-compact" id="achievementsGrid">
+                    <div class="ach-item unlocked" data-ach="first"><span class="ach-emoji">🎯</span><span class="ach-name">Первый шаг</span></div>
+                    <div class="ach-item" data-ach="five"><span class="ach-emoji">🔥</span><span class="ach-name">5</span></div>
+                    <div class="ach-item" data-ach="ten"><span class="ach-emoji">💪</span><span class="ach-name">10</span></div>
+                    <div class="ach-item" data-ach="twenty"><span class="ach-emoji">🏆</span><span class="ach-name">20</span></div>
+                    <div class="ach-item" data-ach="hundred"><span class="ach-emoji">⭐</span><span class="ach-name">100</span></div>
+                    <div class="ach-item" data-ach="all"><span class="ach-emoji">💎</span><span class="ach-name">Все</span></div>
+                </div>
+            </div>
+
+            <!-- Цитата -->
+            <div class="card-glass">
+                <div class="card-title"><i class="fas fa-quote-left"></i> Цитата дня</div>
+                <div class="quote-box">
+                    <div class="quote-text" id="quoteText">"Успех — это сумма маленьких усилий, повторяемых день за днём."</div>
+                    <div class="quote-author" id="quoteAuthor">— Роберт Коллиер</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // ДАННЫЕ
+    // ============================================================
+    let activityData = { math: {}, russian: {}, physics: {}, informatics: {} };
+    let currentSubject = 'math';
+    let currentPeriod = 'week';
+
+    const subjectsColors = {
+        math: '#b35a6c',
+        russian: '#c66f80',
+        physics: '#4a6644',
+        informatics: '#899464'
+    };
+
+    let streakData = { days: {}, currentStreak: 0, maxStreak: 0 };
+    let reminders = [];
+    let starCount = 0;
+
+    let monthlyData = { summaries: {}, goals: {} };
+
+    let egeData = {
+        mood: null, moodNote: '', errors: [],
+        quotes: [
+            { text: '"Успех — это сумма маленьких усилий, повторяемых день за днём."', author: 'Роберт Коллиер' },
+            { text: '"Ты не обязан быть великим, чтобы начать, но ты обязан начать, чтобы стать великим."', author: 'Зиг Зиглар' },
+            { text: '"Секрет успеха в том, чтобы начать."', author: 'Марк Твен' },
+            { text: '"Маленькие ежедневные усилия приводят к большим результатам."', author: 'Джон Максвелл' },
+            { text: '"Единственный способ сделать великую работу — любить то, что ты делаешь."', author: 'Стив Джобс' },
+            { text: '"Если ты можешь мечтать, ты можешь это сделать."', author: 'Уолт Дисней' },
+            { text: '"Не бойся делать ошибки — бойся их не исправлять."', author: 'Роберт Кийосаки' },
+            { text: '"Каждый день ты становишься лучше, чем вчера."', author: 'Тони Роббинс' },
+        ],
+        stats: { tasks: 0, exams: 0, avgScore: 0 },
+        achievements: { first: false, five: false, ten: false, twenty: false, hundred: false, all: false, week: false, stars: false }
+    };
+
+    // ============================================================
+    // ЗАГРУЗКА / СОХРАНЕНИЕ
+    // ============================================================
+    function loadData() {
+        const saved = localStorage.getItem('ege_center_data');
+        if (saved) { try { const data = JSON.parse(saved); egeData = { ...egeData, ...data }; } catch(e) {} }
+    }
+    function saveData() { localStorage.setItem('ege_center_data', JSON.stringify(egeData)); }
+
+    function loadActivityData() {
+        const saved = localStorage.getItem('ege_activity_data');
+        if (saved) { try { const data = JSON.parse(saved); for (const key in activityData) { if (data[key]) activityData[key] = data[key]; } } catch(e) {} }
+    }
+    function saveActivityData() { localStorage.setItem('ege_activity_data', JSON.stringify(activityData)); }
+
+    function loadStreak() {
+        const saved = localStorage.getItem('ege_streak_data');
+        if (saved) { try { const data = JSON.parse(saved); streakData = { ...streakData, ...data }; } catch(e) {} }
+        calculateStreak();
+    }
+    function saveStreak() { localStorage.setItem('ege_streak_data', JSON.stringify(streakData)); }
+
+    function loadReminders() {
+        const saved = localStorage.getItem('ege_reminders');
+        if (saved) { try { reminders = JSON.parse(saved); } catch(e) {} }
+        renderReminders();
+    }
+    function saveReminders() { localStorage.setItem('ege_reminders', JSON.stringify(reminders)); }
+
+    function loadStars() {
+        const saved = localStorage.getItem('ege_stars');
+        if (saved) { try { starCount = parseInt(saved) || 0; } catch(e) {} }
+        document.getElementById('starCount').textContent = starCount;
+    }
+    function saveStars() { localStorage.setItem('ege_stars', String(starCount)); }
+
+    function loadMonthlyData() {
+        const saved = localStorage.getItem('ege_monthly_data');
+        if (saved) { try { const data = JSON.parse(saved); monthlyData = { ...monthlyData, ...data }; } catch(e) {} }
+    }
+    function saveMonthlyData() { localStorage.setItem('ege_monthly_data', JSON.stringify(monthlyData)); }
+
+    // ============================================================
+    // ГРАФИК
+    // ============================================================
+    function getWeekDates() { const dates = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); dates.push(d); } return dates; }
+    function getMonthDates() { const dates = []; const today = new Date(); const firstDay = new Date(today.getFullYear(), today.getMonth(), 1); const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate(); for (let i = 0; i < daysInMonth; i++) { const d = new Date(firstDay); d.setDate(d.getDate() + i); if (d <= today) dates.push(d); } return dates.slice(-30); }
+    function getDayName(date) { const names = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']; return names[date.getDay() === 0 ? 6 : date.getDay() - 1]; }
+
+    function updateActivity(subject, dateStr, value) {
+        if (value < 0) value = 0; if (value > 12) value = 12;
+        activityData[subject][dateStr] = value;
+        saveActivityData();
+        renderChart();
+        updateColorProgress();
+        checkDayAutomatically();
+    }
+
+    function renderChart() {
+        const grid = document.getElementById('chartGrid');
+        const dates = currentPeriod === 'week' ? getWeekDates() : getMonthDates();
+        const data = activityData[currentSubject] || {};
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        let maxValue = 0;
+        dates.forEach(d => { const key = d.toISOString().split('T')[0]; const val = data[key] || 0; if (val > maxValue) maxValue = val; });
+        maxValue = Math.max(maxValue, 3);
+        const maxHeight = 160;
+
+        let html = '';
+        const yLabels = [0, Math.round(maxValue / 2), maxValue];
+        yLabels.forEach(label => { html += `<div class="y-label">${label}</div>`; dates.forEach(() => { html += `<div class="y-label" style="height:20px;"></div>`; }); });
+
+        dates.forEach((date, index) => {
+            const key = date.toISOString().split('T')[0];
+            const value = data[key] || 0;
+            const height = maxValue > 0 ? (value / maxValue) * maxHeight : 0;
+            const isToday = key === todayStr;
+
+            html += `<div class="bar-wrapper">`;
+            html += `<div class="bar-container">`;
+            html += `<div class="bar" style="height:${Math.max(height, 4)}px; background:${subjectsColors[currentSubject]}; opacity:${value > 0 ? 1 : 0.2};">`;
+            html += `<span class="bar-value">${value}</span>`;
+            html += `</div>`;
+            html += `<input type="number" class="bar-input ${isToday ? 'show' : ''}" value="${value}"
+                       min="0" max="12" step="0.5"
+                       onchange="updateActivity('${currentSubject}', '${key}', parseFloat(this.value) || 0)"
+                       onfocus="this.select()">`;
+            html += `</div>`;
+            html += `<div class="day-label ${isToday ? 'today' : ''}">${getDayName(date)}</div>`;
+            html += `</div>`;
+        });
+
+        grid.innerHTML = html;
+
+        let total = 0, count = 0, best = 0;
+        dates.forEach(d => { const key = d.toISOString().split('T')[0]; const val = data[key] || 0; total += val; if (val > 0) count++; if (val > best) best = val; });
+        document.getElementById('totalHours').textContent = total.toFixed(1);
+        document.getElementById('avgHours').textContent = count > 0 ? (total / count).toFixed(1) : '0';
+        document.getElementById('bestDay').textContent = best.toFixed(1);
+    }
+
+    function initTabs() {
+        document.querySelectorAll('.subject-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.subject-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentSubject = this.dataset.subject;
+                renderChart();
+            });
+        });
+        document.querySelectorAll('.period-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentPeriod = this.dataset.period;
+                renderChart();
+            });
+        });
+    }
+
+    // ============================================================
+    // МАРАФОН
+    // ============================================================
+    function calculateStreak() {
+        const today = new Date().toISOString().split('T')[0];
+        let streak = 0, maxStreak = 0, tempStreak = 0;
+        if (streakData.days[today]) { streak = 1; tempStreak = 1; } else { streak = 0; tempStreak = 0; }
+        for (let i = 1; i < 365; i++) {
+            const d = new Date(); d.setDate(d.getDate() - i); const key = d.toISOString().split('T')[0];
+            if (streakData.days[key]) { if (i === 1 && !streakData.days[today]) break; tempStreak++; if (tempStreak > streak) streak = tempStreak; } else { if (i > 1) break; }
+        }
+        let current = 0;
+        const sortedKeys = Object.keys(streakData.days).sort();
+        for (let i = 0; i < sortedKeys.length; i++) {
+            const key = sortedKeys[i];
+            if (i > 0) { const prev = new Date(sortedKeys[i-1]); const curr = new Date(key); const diff = (curr - prev) / (1000 * 60 * 60 * 24); if (diff === 1) { current++; } else { current = 0; } } else { current = 1; }
+            if (current > maxStreak) maxStreak = current;
+        }
+        streakData.currentStreak = streak;
+        streakData.maxStreak = maxStreak;
+        saveStreak();
+        renderStreak();
+        updateRecords();
+    }
+
+    function renderStreak() {
+        document.getElementById('streakDays').textContent = streakData.currentStreak;
+        const grid = document.getElementById('streakGrid');
+        const today = new Date();
+        let html = '';
+        for (let i = 29; i >= 0; i--) {
+            const d = new Date(); d.setDate(d.getDate() - i);
+            const key = d.toISOString().split('T')[0];
+            const isMarked = !!streakData.days[key];
+            const isToday = i === 0;
+            html += `<div class="s-day ${isMarked ? 'marked' : 'empty'} ${isToday ? 'today' : ''}"></div>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    function markToday() {
+        const today = new Date().toISOString().split('T')[0];
+        if (!streakData.days[today]) {
+            streakData.days[today] = true;
+            starCount++;
+            document.getElementById('starCount').textContent = starCount;
+            saveStars();
+            calculateStreak();
+            renderStreak();
+            showNotification('🔥 +1 день марафона!', '#b35a6c');
+            checkAchievements();
+        } else {
+            showNotification('⚠️ Сегодня уже отмечено!', '#b35a6c');
+        }
+    }
+
+    function resetStreak() {
+        if (confirm('Сбросить весь марафон?')) { streakData.days = {}; calculateStreak(); renderStreak(); showNotification('🔄 Марафон сброшен', '#b35a6c'); }
+    }
+
+    // ============================================================
+    // РЕКОРДЫ
+    // ============================================================
+    function getExamScores() {
+        const saved = localStorage.getItem('ege_exams_data_v3');
+        if (!saved) return [];
+        try { const data = JSON.parse(saved); const scores = []; data.forEach(month => { month.exams.forEach(e => { if (e.status === 'done' && e.score !== null) scores.push(e.score); }); }); return scores; } catch(e) { return []; }
+    }
+
+    function getWeekHours() {
+        let total = 0; const today = new Date();
+        for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); const key = d.toISOString().split('T')[0]; for (const subject in activityData) { total += activityData[subject][key] || 0; } }
+        return total;
+    }
+
+    function updateRecords() {
+        const scores = getExamScores();
+        document.getElementById('recordScore').textContent = scores.length > 0 ? Math.max(...scores) : 0;
+        document.getElementById('recordStreak').textContent = streakData.maxStreak || 0;
+        document.getElementById('recordHours').textContent = getWeekHours().toFixed(1);
+        document.getElementById('recordExams').textContent = scores.length;
+    }
+
+    // ============================================================
+    // НАПОМИНАНИЯ
+    // ============================================================
+    function renderReminders() {
+        const container = document.getElementById('remindersList');
+        if (reminders.length === 0) { container.innerHTML = '<div class="re-empty">Нет напоминаний 📭</div>'; return; }
+        let html = '';
+        reminders.forEach((r, i) => { html += `<div class="re-item"><span>🔔</span><span style="flex:1;">${r}</span><button class="re-del" onclick="deleteReminder(${i})">×</button></div>`; });
+        container.innerHTML = html;
+    }
+
+    function addReminder() {
+        const input = document.getElementById('reminderInput');
+        const text = input.value.trim();
+        if (text) { reminders.push(text); input.value = ''; saveReminders(); renderReminders(); showNotification('✅ Напоминание добавлено!', '#b35a6c'); }
+    }
+
+    function deleteReminder(index) { reminders.splice(index, 1); saveReminders(); renderReminders(); }
+
+    // ============================================================
+    // ОШИБКИ
+    // ============================================================
+    function renderErrors() {
+        const container = document.getElementById('errorsList');
+        if (egeData.errors.length === 0) { container.innerHTML = '<div class="re-empty">Нет ошибок 🌟</div>'; return; }
+        let html = '';
+        egeData.errors.forEach((error, i) => { html += `<div class="re-item"><span>📝</span><span style="flex:1;">${error}</span><button class="re-del" onclick="deleteError(${i})">×</button></div>`; });
+        container.innerHTML = html;
+        saveData();
+    }
+
+    function addError() {
+        const input = document.getElementById('errorInput');
+        const text = input.value.trim();
+        if (text) { egeData.errors.push(text); input.value = ''; renderErrors(); saveData(); showNotification('✅ Ошибка записана!', '#b35a6c'); }
+    }
+
+    function deleteError(index) { egeData.errors.splice(index, 1); renderErrors(); saveData(); }
+
+    // ============================================================
+    // ЦВЕТНОЙ ПРОГРЕСС
+    // ============================================================
+    function updateColorProgress() {
+        const subjects = ['math', 'russian', 'physics', 'informatics'];
+        subjects.forEach(subj => {
+            const data = activityData[subj] || {};
+            let total = 0;
+            for (let i = 0; i < 30; i++) { const d = new Date(); d.setDate(d.getDate() - i); const key = d.toISOString().split('T')[0]; total += data[key] || 0; }
+            const progress = Math.min((total / 60) * 100, 100);
+            document.getElementById(`cp-${subj}`).textContent = Math.round(progress) + '%';
+            document.getElementById(`cp-${subj}-bar`).style.width = progress + '%';
+        });
+    }
+
+    // ============================================================
+    // ЕЖЕМЕСЯЧНЫЕ ИТОГИ
+    // ============================================================
+    function getCurrentMonthKey() { const now = new Date(); return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0'); }
+    function getNextMonthKey() { const now = new Date(); now.setMonth(now.getMonth() + 1); return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0'); }
+    function getMonthName(monthKey) { const [year, month] = monthKey.split('-'); const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']; return monthNames[parseInt(month) - 1] + ' ' + year; }
+
+    function renderMonthly() {
+        const currentKey = getCurrentMonthKey();
+        const nextKey = getNextMonthKey();
+        document.getElementById('currentMonthLabel').textContent = getMonthName(currentKey);
+        document.getElementById('nextMonthLabel').textContent = getMonthName(nextKey);
+        document.getElementById('monthlySummary').value = monthlyData.summaries[currentKey] || '';
+        document.getElementById('monthlyGoals').value = monthlyData.goals[nextKey] || '';
+        updateMonthlyStatus();
+        checkMonthlyNotification();
+        renderArchive();
+    }
+
+    function saveMonthlySummary() {
+        const currentKey = getCurrentMonthKey();
+        const text = document.getElementById('monthlySummary').value.trim();
+        if (text) { monthlyData.summaries[currentKey] = text; saveMonthlyData(); updateMonthlyStatus(); renderArchive(); showNotification('✅ Итоги сохранены!', '#b35a6c'); } else { showNotification('⚠️ Напишите итоги!', '#b35a6c'); }
+    }
+
+    function saveMonthlyGoals() {
+        const nextKey = getNextMonthKey();
+        const text = document.getElementById('monthlyGoals').value.trim();
+        if (text) { monthlyData.goals[nextKey] = text; saveMonthlyData(); updateMonthlyStatus(); renderArchive(); showNotification('✅ Цели сохранены!', '#b35a6c'); } else { showNotification('⚠️ Напишите цели!', '#b35a6c'); }
+    }
+
+    function updateMonthlyStatus() {
+        const currentKey = getCurrentMonthKey();
+        const nextKey = getNextMonthKey();
+        const summaryStatus = document.getElementById('monthlySummaryStatus');
+        const goalsStatus = document.getElementById('monthlyGoalsStatus');
+        summaryStatus.textContent = monthlyData.summaries[currentKey] ? '✅ Итоги сохранены' : '⏳ Итоги не сохранены';
+        summaryStatus.style.color = monthlyData.summaries[currentKey] ? '#4a6644' : 'rgba(26,26,46,0.3)';
+        goalsStatus.textContent = monthlyData.goals[nextKey] ? '✅ Цели сохранены' : '⏳ Цели не сохранены';
+        goalsStatus.style.color = monthlyData.goals[nextKey] ? '#4a6644' : 'rgba(26,26,46,0.3)';
+    }
+
+    function checkMonthlyNotification() {
+        const today = new Date();
+        const day = today.getDate();
+        const currentKey = getCurrentMonthKey();
+        if (day >= 25 && !monthlyData.summaries[currentKey]) {
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            if (day >= 25 && day <= lastDay) {
+                const lastNotif = localStorage.getItem('ege_monthly_notif_' + currentKey);
+                if (lastNotif !== today.toDateString()) {
+                    setTimeout(() => { showNotification('📆 Конец месяца! Пора подвести итоги! ✍️', '#b35a6c'); localStorage.setItem('ege_monthly_notif_' + currentKey, today.toDateString()); }, 2000);
+                }
+            }
+        }
+        if (day === 1) {
+            const nextKey = getNextMonthKey();
+            if (!monthlyData.goals[nextKey]) {
+                const lastNotif = localStorage.getItem('ege_monthly_notif_goals_' + nextKey);
+                if (lastNotif !== today.toDateString()) {
+                    setTimeout(() => { showNotification('🎯 Новый месяц! Поставь цели! 🚀', '#b35a6c'); localStorage.setItem('ege_monthly_notif_goals_' + nextKey, today.toDateString()); }, 2000);
+                }
+            }
+        }
+    }
+
+    function renderArchive() {
+        const container = document.getElementById('archiveList');
+        const allEntries = [];
+        for (const key in monthlyData.summaries) { allEntries.push({ key: key, type: '📊 Итоги', text: monthlyData.summaries[key] }); }
+        for (const key in monthlyData.goals) { allEntries.push({ key: key, type: '🎯 Цели', text: monthlyData.goals[key] }); }
+        allEntries.sort((a, b) => b.key.localeCompare(a.key));
+        if (allEntries.length === 0) { container.innerHTML = '<div class="re-empty">Нет записей в архиве 📭</div>'; return; }
+        let html = '';
+        allEntries.forEach(entry => {
+            html += `<div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:8px 12px; margin-bottom:6px; border-left:3px solid #b35a6c;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                    <span style="font-size:0.6rem; font-weight:700; font-family:'Inter',sans-serif; color:#b35a6c;">${entry.type} — ${getMonthName(entry.key)}</span>
+                    <button onclick="deleteMonthlyEntry('${entry.key}', '${entry.type}')" style="background:none; border:none; color:rgba(26,26,46,0.2); cursor:pointer;">×</button>
+                </div>
+                <div style="font-size:0.7rem; font-family:'Inter',sans-serif; color:#1a1a2e; font-weight:500; white-space:pre-wrap;">${entry.text}</div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function deleteMonthlyEntry(key, type) {
+        if (confirm(`Удалить запись "${type}" за ${getMonthName(key)}?`)) {
+            if (type === '📊 Итоги') { delete monthlyData.summaries[key]; } else { delete monthlyData.goals[key]; }
+            saveMonthlyData(); renderArchive(); updateMonthlyStatus(); showNotification('🗑️ Запись удалена', '#b35a6c');
+        }
+    }
+
+    function showMonthlyTab(tab) {
+        document.querySelectorAll('.mt-btn').forEach(b => b.classList.remove('active'));
+        if (tab === 'current') {
+            document.querySelector('.mt-btn:first-child').classList.add('active');
+            document.getElementById('monthlyCurrent').style.display = 'block';
+            document.getElementById('monthlyArchive').style.display = 'none';
+        } else {
+            document.querySelector('.mt-btn:last-child').classList.add('active');
+            document.getElementById('monthlyCurrent').style.display = 'none';
+            document.getElementById('monthlyArchive').style.display = 'block';
+            renderArchive();
+        }
+    }
+
+    // ============================================================
+    // УВЕДОМЛЕНИЯ
+    // ============================================================
+    function showNotification(message, color = '#b35a6c') {
+        const old = document.querySelector('.notification');
+        if (old) old.remove();
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.style.borderLeftColor = color;
+        notif.textContent = message;
+        document.body.appendChild(notif);
+        setTimeout(() => { notif.classList.add('hide'); setTimeout(() => notif.remove(), 500); }, 2500);
+    }
+
+    // ============================================================
+    // ДОСТИЖЕНИЯ
+    // ============================================================
+    function checkAchievements() {
+        const scores = getExamScores();
+        const totalExams = scores.length;
+        const avgScore = totalExams > 0 ? Math.round(scores.reduce((a,b) => a+b, 0) / totalExams) : 0;
+        const streak = streakData.currentStreak;
+        const stars = starCount;
+        let newAchievement = false;
+        if (totalExams >= 1 && !egeData.achievements.first) { egeData.achievements.first = true; newAchievement = true; showNotification('🎯 Достижение: "Первый шаг"!', '#b35a6c'); }
+        if (totalExams >= 5 && !egeData.achievements.five) { egeData.achievements.five = true; newAchievement = true; showNotification('🔥 Достижение: "5 пробников"!', '#b35a6c'); }
+        if (totalExams >= 10 && !egeData.achievements.ten) { egeData.achievements.ten = true; newAchievement = true; showNotification('💪 Достижение: "10 пробников"!', '#b35a6c'); }
+        if (totalExams >= 20 && !egeData.achievements.twenty) { egeData.achievements.twenty = true; newAchievement = true; showNotification('🏆 Достижение: "20 пробников"!', '#b35a6c'); }
+        if (avgScore >= 90 && !egeData.achievements.hundred) { egeData.achievements.hundred = true; newAchievement = true; showNotification('⭐ Достижение: "100 баллов"!', '#b35a6c'); }
+        if (totalExams >= 72 && !egeData.achievements.all) { egeData.achievements.all = true; newAchievement = true; showNotification('💎 Достижение: "Все пробники"!', '#b35a6c'); }
+        if (streak >= 7 && !egeData.achievements.week) { egeData.achievements.week = true; newAchievement = true; showNotification('🔥 Достижение: "Неделя марафона"!', '#b35a6c'); }
+        if (stars >= 10 && !egeData.achievements.stars) { egeData.achievements.stars = true; newAchievement = true; showNotification('✨ Достижение: "10 звёзд"!', '#b35a6c'); }
+        if (newAchievement) { updateAchievements(); saveData(); }
+    }
+
+    function updateAchievements() {
+        document.querySelectorAll('.ach-item').forEach(el => {
+            const key = el.dataset.ach;
+            el.classList.toggle('unlocked', egeData.achievements[key] || false);
+        });
+    }
+
+    // ============================================================
+    // АВТОМАТИЧЕСКАЯ ПРОВЕРКА ДНЯ
+    // ============================================================
+    function checkDayAutomatically() {
+        const today = new Date().toISOString().split('T')[0];
+        let hasActivity = false;
+        for (const subject in activityData) { if (activityData[subject][today] > 0) { hasActivity = true; break; } }
+        if (hasActivity && !streakData.days[today]) {
+            streakData.days[today] = true;
+            starCount++;
+            document.getElementById('starCount').textContent = starCount;
+            saveStars();
+            calculateStreak();
+            renderStreak();
+        }
+    }
+
+    // ============================================================
+    // ОСТАЛЬНЫЕ ФУНКЦИИ
+    // ============================================================
+    function setMood(emoji) { document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active')); const btn = document.querySelector(`.mood-btn[data-mood="${emoji}"]`); if (btn) btn.classList.add('active'); egeData.mood = emoji; saveData(); }
+    function saveMoodNote() { egeData.moodNote = document.getElementById('moodNote').value; saveData(); }
+    function loadMood() { if (egeData.mood) { const btn = document.querySelector(`.mood-btn[data-mood="${egeData.mood}"]`); if (btn) btn.classList.add('active'); } document.getElementById('moodNote').value = egeData.moodNote || ''; }
+
+    function setDailyQuote() {
+        const today = new Date().toDateString();
+        const saved = localStorage.getItem('ege_quote_date');
+        let index = parseInt(localStorage.getItem('ege_quote_index')) || 0;
+        if (saved !== today) { index = Math.floor(Math.random() * egeData.quotes.length); localStorage.setItem('ege_quote_date', today); localStorage.setItem('ege_quote_index', index); }
+        const quote = egeData.quotes[index] || egeData.quotes[0];
+        document.getElementById('quoteText').textContent = quote.text;
+        document.getElementById('quoteAuthor').textContent = quote.author;
+    }
+
+    let pomodoroTime = 25 * 60, pomodoroRunning = false, pomodoroPaused = false, pomodoroInterval = null;
+    function updatePomodoroDisplay() { const mins = Math.floor(pomodoroTime / 60); const secs = pomodoroTime % 60; document.getElementById('pomodoroTimer').textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0'); }
+    function startPomodoro() { if (pomodoroRunning && !pomodoroPaused) return; if (pomodoroTime <= 0) { resetPomodoro(); return; } pomodoroRunning = true; pomodoroPaused = false; document.getElementById('pomodoroStatus').textContent = '🎯 Работаем!'; if (pomodoroInterval) clearInterval(pomodoroInterval); pomodoroInterval = setInterval(() => { pomodoroTime--; updatePomodoroDisplay(); if (pomodoroTime <= 0) { clearInterval(pomodoroInterval); document.getElementById('pomodoroStatus').textContent = '🎉 Отдых 5 минут!'; pomodoroRunning = false; } }, 1000); }
+    function pausePomodoro() { if (!pomodoroRunning) return; pomodoroPaused = !pomodoroPaused; document.getElementById('pomodoroStatus').textContent = pomodoroPaused ? '⏸ Пауза' : '🎯 Работаем!'; if (pomodoroPaused && pomodoroInterval) { clearInterval(pomodoroInterval); pomodoroInterval = null; } else if (!pomodoroPaused) { startPomodoro(); } }
+    function resetPomodoro() { if (pomodoroInterval) clearInterval(pomodoroInterval); pomodoroTime = 25 * 60; pomodoroRunning = false; pomodoroPaused = false; pomodoroInterval = null; document.getElementById('pomodoroStatus').textContent = '⏳ Готов к работе'; updatePomodoroDisplay(); }
+
+    function updateSmartStats() {
+        const scores = getExamScores();
+        const totalExams = scores.length;
+        const avgScore = totalExams > 0 ? Math.round(scores.reduce((a,b) => a+b, 0) / totalExams) : 0;
+        let tasksCount = 0;
+        const plannerData = localStorage.getItem('ege_planner_data');
+        if (plannerData) { try { const data = JSON.parse(plannerData); for (const key in data.subjects) { tasksCount += data.subjects[key].tasks ? data.subjects[key].tasks.length : 0; } } catch(e) {} }
+        egeData.stats.tasks = tasksCount;
+        egeData.stats.exams = totalExams;
+        egeData.stats.avgScore = avgScore;
+        document.getElementById('statTasks').textContent = tasksCount + ' занятий';
+        document.getElementById('statExams').textContent = totalExams + ' пробников';
+        document.getElementById('statAvg').textContent = 'Ср. балл: ' + avgScore;
+        let motivation = totalExams === 0 ? 'Начни с первого пробника! 🚀' : avgScore >= 90 ? 'Ты невероятен! 🌟' : avgScore >= 75 ? 'Отличный результат! 💪' : avgScore >= 60 ? 'Хороший прогресс! 🔥' : avgScore >= 40 ? 'Ты на правильном пути! 📈' : 'Не сдавайся! 💪';
+        document.getElementById('statMotivation').textContent = motivation;
+        saveData();
+    }
+
+    function updateTracker() {
+        const avg = egeData.stats.avgScore || 0;
+        const progress = Math.min(avg, 100);
+        document.getElementById('trackerFill').style.width = progress + '%';
+        document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+    }
+
+    function showWelcomeMessage() {
+        const today = new Date().toDateString();
+        const lastVisit = localStorage.getItem('ege_last_visit');
+        if (lastVisit !== today) {
+            const hour = new Date().getHours();
+            let greeting = 'Доброе утро! ☀️';
+            if (hour >= 12 && hour < 18) greeting = 'Добрый день! 🌤️';
+            else if (hour >= 18) greeting = 'Добрый вечер! 🌙';
+            setTimeout(() => { showNotification(`${greeting} Готов(а) покорять ЕГЭ? 🚀`, '#b35a6c'); }, 1000);
+            localStorage.setItem('ege_last_visit', today);
+        }
+    }
+
+    // ============================================================
+    // ЗАПУСК
+    // ============================================================
+    function init() {
+        loadData();
+        loadActivityData();
+        loadStreak();
+        loadReminders();
+        loadStars();
+        loadMonthlyData();
+        initTabs();
+        renderChart();
+        renderStreak();
+        renderReminders();
+        renderMonthly();
+        loadMood();
+        setDailyQuote();
+        renderErrors();
+        updateSmartStats();
+        updateTracker();
+        updateAchievements();
+        updateColorProgress();
+        updateRecords();
+        resetPomodoro();
+        checkDayAutomatically();
+        setTimeout(showWelcomeMessage, 1500);
+        console.log('✅ ЕГЭ Центр загружен!');
+        setInterval(updateColorProgress, 30000);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

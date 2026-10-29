@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ЕГЭ Календарь</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Playfair Display', serif;
+            min-height: 100vh;
+            background: url('{{ url_for('static', filename='6.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Навигация */
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .nav-custom .btn i { margin-right: 8px; }
+        .nav-custom .btn-outline-success {
+            color: #2C2C2C;
+            border-color: rgba(44,44,44,0.15);
+        }
+        .nav-custom .btn-outline-success:hover {
+            background: #b35a6c;
+            color: white;
+            border-color: #b35a6c;
+        }
+        .nav-custom .btn-success {
+            background: #b35a6c;
+            border-color: #b35a6c;
+            color: white;
+        }
+        .nav-custom .btn-success:hover {
+            background: #9a4a5a;
+        }
+
+        /* Основной контейнер */
+        .calendar-wrapper {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Календарь (слева) */
+        .calendar-main {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .calendar-header .title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2C2C2C;
+            font-family: 'Playfair Display', serif;
+        }
+        .calendar-header .title small {
+            font-size: 0.5rem;
+            opacity: 0.4;
+            font-weight: 400;
+            display: block;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .calendar-nav button {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #2C2C2C;
+        }
+        .calendar-nav button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+        .calendar-nav .week-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2C2C2C;
+            min-width: 200px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+        }
+        .calendar-nav .btn-today {
+            background: rgba(179, 90, 108, 0.6);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .calendar-nav .btn-today:hover {
+            background: #b35a6c;
+        }
+
+        /* Сетка недели */
+        .week-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(7, 1fr);
+            gap: 2px;
+        }
+        .week-grid .time-slot {
+            font-size: 0.6rem;
+            color: rgba(44,44,44,0.3);
+            text-align: center;
+            padding: 4px 0;
+            font-family: 'Inter', sans-serif;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .week-grid .day-header {
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2C2C2C;
+            padding: 6px 0;
+            font-family: 'Inter', sans-serif;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .week-grid .day-header.today {
+            color: #b35a6c;
+        }
+        .week-grid .day-header .date-num {
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 50%;
+            text-align: center;
+        }
+        .week-grid .day-header.today .date-num {
+            background: #b35a6c;
+            color: white;
+        }
+
+        .week-grid .day-cell {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            min-height: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+        .week-grid .day-cell:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* События в ячейке */
+        .week-event {
+            position: absolute;
+            left: 2px;
+            right: 2px;
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 0.5rem;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            min-height: 16px;
+            z-index: 2;
+        }
+        .week-event:hover {
+            transform: scale(1.02);
+            z-index: 3;
+        }
+        .week-event .event-title {
+            font-weight: 600;
+            font-size: 0.5rem;
+        }
+        .week-event .event-time {
+            font-size: 0.45rem;
+            opacity: 0.8;
+        }
+        .week-event.done {
+            opacity: 0.7;
+        }
+        .week-event.done::after {
+            content: ' ✓';
+            color: #4CAF50;
+        }
+
+        /* ============================================================
+           ПРАВАЯ ПАНЕЛЬ - КРУЖКИ ПРЕДМЕТОВ (БОЛЬШИЕ)
+           ============================================================ */
+        .right-panel {
+            width: 220px;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .subject-donuts {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            flex: 1;
+        }
+        .subject-donuts .panel-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(44,44,44,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .donut-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 6px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .donut-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* БОЛЬШОЙ ПОНЧИК */
+        .donut {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .donut svg {
+            width: 70px;
+            height: 70px;
+            transform: rotate(-90deg);
+        }
+        .donut .bg {
+            fill: none;
+            stroke: rgba(44,44,44,0.08);
+            stroke-width: 8;
+        }
+        .donut .progress {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+        .donut .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #2C2C2C;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .donut .center-text .label {
+            font-size: 0.4rem;
+            font-weight: 400;
+            opacity: 0.4;
+            display: block;
+        }
+
+        .donut-info {
+            flex: 1;
+        }
+        .donut-info .donut-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2C2C2C;
+            font-family: 'Playfair Display', serif;
+        }
+        .donut-info .donut-stats {
+            font-size: 0.65rem;
+            color: rgba(44,44,44,0.4);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Кнопка пробников */
+        .btn-exams {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #b35a6c, #c66f80);
+            color: white;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-exams:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(179, 90, 108, 0.3);
+            color: white;
+        }
+        .btn-exams i { margin-right: 8px; }
+
+        /* ============================================================
+           МОДАЛКИ
+           ============================================================ */
+        .modal-content-custom {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+        .modal-header {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-family: 'Playfair Display', serif;
+        }
+        .modal-header .modal-title {
+            font-weight: 600;
+            color: #2C2C2C;
+        }
+        .modal-footer {
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .modal-body .form-label {
+            font-weight: 500;
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+        }
+        .modal-body .form-control, .modal-body .form-select {
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.06);
+            font-family: 'Inter', sans-serif;
+        }
+        .modal-body .form-control:focus, .modal-body .form-select:focus {
+            border-color: #b35a6c;
+            box-shadow: 0 0 0 3px rgba(179, 90, 108, 0.08);
+        }
+        .modal-body .form-check-input:checked {
+            background-color: #b35a6c;
+            border-color: #b35a6c;
+        }
+
+        .btn-save {
+            background: #899464;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 28px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .btn-save:hover {
+            background: #768152;
+            color: white;
+        }
+        .btn-delete {
+            background: #b35a6c;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 28px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .btn-delete:hover {
+            background: #9a4a5a;
+            color: white;
+        }
+        .btn-success-custom {
+            background: #b35a6c;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 28px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .btn-success-custom:hover {
+            background: #9a4a5a;
+            color: white;
+        }
+        .btn-secondary-custom {
+            background: rgba(44,44,44,0.05);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 28px;
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .btn-secondary-custom:hover {
+            background: rgba(44,44,44,0.10);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .calendar-wrapper {
+                flex-direction: column;
+            }
+            .right-panel {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .subject-donuts {
+                flex: 1;
+                min-width: 200px;
+            }
+            .subject-donuts .panel-title {
+                text-align: left;
+            }
+            .donut-item {
+                padding: 6px 10px;
+            }
+            .donut {
+                width: 60px;
+                height: 60px;
+            }
+            .donut svg {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        @media (max-width: 768px) {
+            .week-grid {
+                grid-template-columns: 35px repeat(7, 1fr);
+                font-size: 0.5rem;
+            }
+            .week-grid .time-slot { font-size: 0.45rem; padding: 2px 0; }
+            .week-grid .day-header { font-size: 0.55rem; }
+            .week-grid .day-header .date-num { width: 20px; height: 20px; line-height: 20px; }
+            .week-event { font-size: 0.4rem; padding: 1px 2px; min-height: 12px; }
+            .week-event .event-title { font-size: 0.4rem; }
+            .week-event .event-time { font-size: 0.35rem; }
+            .donut { width: 50px; height: 50px; }
+            .donut svg { width: 50px; height: 50px; }
+            .donut .center-text { font-size: 0.6rem; }
+            .calendar-nav .week-label { font-size: 0.7rem; min-width: 120px; }
+            .calendar-header .title { font-size: 1rem; }
+            .nav-custom .btn { font-size: 0.65rem; padding: 5px 10px; }
+            .right-panel { flex-direction: column; }
+            .donut { width: 55px; height: 55px; }
+            .donut svg { width: 55px; height: 55px; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .day-cell { animation: fadeIn 0.2s ease; }
+        .week-event { animation: fadeIn 0.25s ease; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Навигация -->
+    <nav class="nav-custom">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits') }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals') }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('ege_planner') }}" class="btn btn-outline-success">
+                <i class="fas fa-rocket"></i> ЕГЭ Планер
+            </a>
+            <a href="{{ url_for('ege_center') }}" class="btn btn-outline-success" style="background: #c66f80; color: white; border-color: #c66f80;">
+                <i class="fas fa-star"></i> ЕГЭ Центр
+            </a>
+            <a href="{{ url_for('sprint') }}" class="btn btn-outline-success">
+    <i class="fas fa-running"></i> Спринт
+</a>
+            <a href="{{ url_for('ege_calendar_page') }}" class="btn btn-success">
+                <i class="fas fa-calendar-check"></i> ЕГЭ Календарь
+            </a>
+            <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <!-- Основной контейнер -->
+    <div class="calendar-wrapper">
+        <!-- КАЛЕНДАРЬ (неделя) -->
+        <div class="calendar-main">
+            <div class="calendar-header">
+                <div class="title">
+                    📅 ЕГЭ Календарь
+                    <small>Недельная сетка</small>
+                </div>
+                <div class="calendar-nav">
+                    <button onclick="changeWeek(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <span class="week-label" id="weekLabel">Неделя</span>
+                    <button onclick="changeWeek(1)"><i class="fas fa-chevron-right"></i></button>
+                    <button class="btn-today" onclick="goToday()">Сегодня</button>
+                </div>
+            </div>
+
+            <div class="week-grid" id="weekGrid">
+                <!-- Заполняется JS -->
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ -->
+        <div class="right-panel">
+            <!-- Кружки предметов -->
+            <div class="subject-donuts">
+                <div class="panel-title">📊 Прогресс</div>
+
+                <!-- Математика -->
+                <div class="donut-item" data-subject="math">
+                    <div class="donut" id="donut-math">
+                        <svg viewBox="0 0 70 70">
+                            <circle class="bg" cx="35" cy="35" r="28"/>
+                            <circle class="progress" cx="35" cy="35" r="28" stroke="#b35a6c" stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+                        </svg>
+                        <div class="center-text"><span id="donut-math-text">0</span><span class="label">занятий</span></div>
+                    </div>
+                    <div class="donut-info">
+                        <div class="donut-name">Математика</div>
+                        <div class="donut-stats" id="donut-math-stats">0 / 0 выполнено</div>
+                    </div>
+                </div>
+
+                <!-- Русский -->
+                <div class="donut-item" data-subject="russian">
+                    <div class="donut" id="donut-russian">
+                        <svg viewBox="0 0 70 70">
+                            <circle class="bg" cx="35" cy="35" r="28"/>
+                            <circle class="progress" cx="35" cy="35" r="28" stroke="#c66f80" stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+                        </svg>
+                        <div class="center-text"><span id="donut-russian-text">0</span><span class="label">занятий</span></div>
+                    </div>
+                    <div class="donut-info">
+                        <div class="donut-name">Русский язык</div>
+                        <div class="donut-stats" id="donut-russian-stats">0 / 0 выполнено</div>
+                    </div>
+                </div>
+
+                <!-- Физика -->
+                <div class="donut-item" data-subject="physics">
+                    <div class="donut" id="donut-physics">
+                        <svg viewBox="0 0 70 70">
+                            <circle class="bg" cx="35" cy="35" r="28"/>
+                            <circle class="progress" cx="35" cy="35" r="28" stroke="#4a6644" stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+                        </svg>
+                        <div class="center-text"><span id="donut-physics-text">0</span><span class="label">занятий</span></div>
+                    </div>
+                    <div class="donut-info">
+                        <div class="donut-name">Физика</div>
+                        <div class="donut-stats" id="donut-physics-stats">0 / 0 выполнено</div>
+                    </div>
+                </div>
+
+                <!-- Информатика -->
+                <div class="donut-item" data-subject="informatics">
+                    <div class="donut" id="donut-informatics">
+                        <svg viewBox="0 0 70 70">
+                            <circle class="bg" cx="35" cy="35" r="28"/>
+                            <circle class="progress" cx="35" cy="35" r="28" stroke="#899464" stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+                        </svg>
+                        <div class="center-text"><span id="donut-informatics-text">0</span><span class="label">занятий</span></div>
+                    </div>
+                    <div class="donut-info">
+                        <div class="donut-name">Информатика</div>
+                        <div class="donut-stats" id="donut-informatics-stats">0 / 0 выполнено</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопка Мои пробники -->
+            <button class="btn-exams" onclick="openExams()">
+                <i class="fas fa-trophy"></i> Мои пробники
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     МОДАЛКА ДОБАВЛЕНИЯ
+     ============================================================ -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('add_ege_event') }}" id="addEventForm">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle" style="color:#b35a6c;"></i> Добавить занятие</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="day" id="modalDay" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Предмет</label>
+                        <select class="form-select" name="student" id="modalSubject" required>
+                            <option value="">-- Выберите предмет --</option>
+                            {% for s in students %}
+                                {% if s.category == 'ЕГЭ' or s.name in ['Математика', 'Русский язык', 'Физика', 'Информатика'] %}
+                                <option value="{{ s.name }}">{{ s.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- Если в students нет, добавляем вручную -->
+                            <option value="Математика">📐 Математика</option>
+                            <option value="Русский язык">📖 Русский язык</option>
+                            <option value="Физика">⚡ Физика</option>
+                            <option value="Информатика">💻 Информатика</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Время начала</label>
+                        <input type="time" class="form-control" name="start" id="modalStart" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Время окончания</label>
+                        <input type="time" class="form-control" name="end" id="modalEnd" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Заметка</label>
+                        <textarea class="form-control" name="comment" id="modalComment" rows="2" placeholder="Что планируешь делать? (номера заданий, темы...)"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="done" id="modalDone" value="true">
+                            <label class="form-check-label" for="modalDone">
+                                ✅ Выполнено
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn-success-custom">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================
+     МОДАЛКА РЕДАКТИРОВАНИЯ
+     ============================================================ -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('update_ege_event') }}" id="updateForm">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit" style="color:#899464;"></i> Редактировать</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="day" id="editDay" />
+                    <input type="hidden" name="index" id="editIndex" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Предмет</label>
+                        <input type="text" class="form-control" id="editStudent" disabled style="background:#f5f5f5;">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Время начала</label>
+                        <input type="time" class="form-control" id="editStartTime" name="start" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Время окончания</label>
+                        <input type="time" class="form-control" id="editEndTime" name="end" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Заметка</label>
+                        <textarea class="form-control" id="editComment" name="comment" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="edit_done" id="editDone">
+                            <label class="form-check-label" for="editDone">
+                                ✅ Выполнено
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn-save">Сохранить</button>
+                    <button type="button" class="btn-delete" onclick="deleteEvent()">Удалить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================
+     СКРЫТАЯ ФОРМА УДАЛЕНИЯ
+     ============================================================ -->
+<form id="deleteForm" method="POST" action="{{ url_for('delete_ege_event') }}" style="display:none;">
+    <input type="hidden" name="day" id="deleteDay" />
+    <input type="hidden" name="index" id="deleteIndex" />
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ============================================================
+    // ДАННЫЕ
+    // ============================================================
+    const egeCalendarData = {{ ege_calendar|tojson|safe }};
+    const studentsList = {{ students|tojson|safe }};
+
+    let currentWeekOffset = 0;
+    const today = new Date();
+    const startHour = 7;
+    const endHour = 23;
+
+    // Карта предметов для определения ключа (только ЕГЭ-предметы)
+    const subjectMap = {
+        'математика': 'math',
+        'математ': 'math',
+        'русский': 'russian',
+        'физика': 'physics',
+        'информатика': 'informatics',
+        'информат': 'informatics'
+    };
+
+    // Данные для кружков
+    let donutData = {
+        math: { total: 0, done: 0 },
+        russian: { total: 0, done: 0 },
+        physics: { total: 0, done: 0 },
+        informatics: { total: 0, done: 0 }
+    };
+
+    // ============================================================
+    // ПОЛУЧЕНИЕ НЕДЕЛИ
+    // ============================================================
+    function getWeekDates(offset) {
+        const start = new Date(today);
+        start.setDate(today.getDate() - today.getDay() + 1 + offset * 7);
+        const dates = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            dates.push(d);
+        }
+        return dates;
+    }
+
+    // ============================================================
+    // РЕНДЕР КАЛЕНДАРЯ (НЕДЕЛЯ)
+    // ============================================================
+    function renderWeek(offset) {
+        const dates = getWeekDates(offset);
+        const grid = document.getElementById('weekGrid');
+        const label = document.getElementById('weekLabel');
+
+        const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
+                           'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+        const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+        // Заголовок недели
+        const startStr = dates[0].toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+        const endStr = dates[6].toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+        label.textContent = `${startStr} — ${endStr}`;
+
+        let html = '';
+
+        // Заголовки дней
+        html += `<div class="time-slot"></div>`;
+        dates.forEach((date, i) => {
+            const isToday = date.toDateString() === today.toDateString();
+            const dayNum = date.getDate();
+            html += `<div class="day-header ${isToday ? 'today' : ''}">
+                ${dayNames[i]} <span class="date-num">${dayNum}</span>
+            </div>`;
+        });
+
+        // Строки времени
+        const cellHeight = 50;
+        for (let hour = startHour; hour <= endHour; hour++) {
+            const timeStr = hour <= 12 ? `${hour}:00` : `${hour-12}:00`;
+            html += `<div class="time-slot">${timeStr}</div>`;
+
+            dates.forEach((date, dayIndex) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const events = egeCalendarData[dateStr] || [];
+                const cellId = `cell-${dateStr}-${hour}`;
+                html += `<div class="day-cell" id="${cellId}" data-date="${dateStr}" data-hour="${hour}"></div>`;
+            });
+        }
+
+        grid.innerHTML = html;
+
+        // Добавляем события
+        setTimeout(() => {
+            dates.forEach((date, dayIndex) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const events = egeCalendarData[dateStr] || [];
+
+                events.forEach((event, eventIndex) => {
+                    if (event.start && event.end) {
+                        const [startH, startM] = event.start.split(':').map(Number);
+                        const [endH, endM] = event.end.split(':').map(Number);
+                        const startMin = (startH - startHour) * 60 + startM;
+                        const endMin = (endH - startHour) * 60 + endM;
+                        const duration = endMin - startMin;
+
+                        const cell = document.getElementById(`cell-${dateStr}-${startH}`);
+                        if (cell) {
+                            const top = (startMin % 60) / 60 * cellHeight;
+                            const height = duration / 60 * cellHeight;
+
+                            const eventDiv = document.createElement('div');
+                            eventDiv.className = `week-event ${event.done ? 'done' : ''}`;
+                            eventDiv.style.top = `${top}px`;
+                            eventDiv.style.height = `${Math.max(height, 16)}px`;
+                            eventDiv.style.background = event.color || '#b35a6c';
+                            eventDiv.innerHTML = `
+                                <div class="event-title">${event.student}</div>
+                                <div class="event-time">${event.start}-${event.end}</div>
+                            `;
+                            eventDiv.onclick = (function(dateStr, eventIndex, event) {
+                                return function(e) {
+                                    e.stopPropagation();
+                                    openEditEvent(dateStr, eventIndex, event);
+                                };
+                            })(dateStr, eventIndex, event);
+                            cell.appendChild(eventDiv);
+                        }
+                    }
+                });
+            });
+
+            // Обновляем кружки
+            updateDonuts();
+        }, 100);
+    }
+
+    // ============================================================
+    // ОБНОВЛЕНИЕ КРУЖКОВ (только ЕГЭ-предметы)
+    // ============================================================
+    function updateDonuts() {
+        // Собираем статистику из всех событий в календаре
+        const allEvents = [];
+        for (const date in egeCalendarData) {
+            egeCalendarData[date].forEach(e => {
+                allEvents.push(e);
+            });
+        }
+
+        // Сброс данных
+        for (const key in donutData) {
+            donutData[key] = { total: 0, done: 0 };
+        }
+
+        // Подсчет (только для ЕГЭ-предметов)
+        allEvents.forEach(event => {
+            const subjectKey = getSubjectKey(event.student);
+            if (subjectKey && donutData[subjectKey]) {
+                donutData[subjectKey].total++;
+                if (event.done) {
+                    donutData[subjectKey].done++;
+                }
+            }
+        });
+
+        // Обновление отображения
+        for (const key in donutData) {
+            const total = donutData[key].total;
+            const done = donutData[key].done;
+            const percentage = total > 0 ? (done / total) * 100 : 0;
+
+            // Текст
+            document.getElementById(`donut-${key}-text`).textContent = done;
+            document.getElementById(`donut-${key}-stats`).textContent = `${done} / ${total} выполнено`;
+
+            // Круг
+            const svg = document.querySelector(`#donut-${key} svg`);
+            const circle = svg ? svg.querySelector('.progress') : null;
+            if (circle) {
+                const circumference = 175.9;
+                const offset = circumference - (percentage / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+            }
+        }
+    }
+
+    function getSubjectKey(studentName) {
+        const lower = studentName.toLowerCase();
+        for (const [key, value] of Object.entries(subjectMap)) {
+            if (lower.includes(key)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    // ============================================================
+    // УПРАВЛЕНИЕ НЕДЕЛЕЙ
+    // ============================================================
+    function changeWeek(delta) {
+        currentWeekOffset += delta;
+        renderWeek(currentWeekOffset);
+    }
+
+    function goToday() {
+        currentWeekOffset = 0;
+        renderWeek(0);
+    }
+
+    // ============================================================
+    // МОДАЛКИ
+    // ============================================================
+    const eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+
+    function openAddEvent(dateStr, hour) {
+        document.getElementById('modalDay').value = dateStr;
+        if (hour !== undefined) {
+            document.getElementById('modalStart').value = `${String(hour).padStart(2, '0')}:00`;
+            document.getElementById('modalEnd').value = `${String(hour + 1).padStart(2, '0')}:00`;
+        } else {
+            document.getElementById('modalStart').value = '';
+            document.getElementById('modalEnd').value = '';
+        }
+        document.getElementById('modalComment').value = '';
+        document.getElementById('modalDone').checked = false;
+        document.getElementById('modalSubject').value = '';
+        eventModal.show();
+    }
+
+    function openEditEvent(dateStr, index, event) {
+        document.getElementById('editDay').value = dateStr;
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editStudent').value = event.student;
+        document.getElementById('editStartTime').value = event.start;
+        document.getElementById('editEndTime').value = event.end;
+        document.getElementById('editComment').value = event.comment || '';
+        document.getElementById('editDone').checked = event.done || false;
+        document.getElementById('deleteDay').value = dateStr;
+        document.getElementById('deleteIndex').value = index;
+
+        editModal.show();
+    }
+
+    function deleteEvent() {
+        if (confirm('Удалить это событие?')) {
+            document.getElementById('deleteForm').submit();
+        }
+    }
+
+    // Клик по ячейке
+    document.addEventListener('click', function(e) {
+        const cell = e.target.closest('.day-cell');
+        if (cell && !e.target.closest('.week-event')) {
+            const date = cell.dataset.date;
+            const hour = parseInt(cell.dataset.hour);
+            if (date && !isNaN(hour)) {
+                openAddEvent(date, hour);
+            }
+        }
+    });
+
+    // ============================================================
+    // ПРОБНИКИ
+    // ============================================================
+    function openExams() {
+        window.location.href = "{{ url_for('ege_exams') }}";
+    }
+
+    // ============================================================
+    // ЗАПУСК
+    // ============================================================
+    renderWeek(currentWeekOffset);
+    console.log('✅ ЕГЭ Календарь (неделя) загружен!');
+    console.log('📊 Данные:', egeCalendarData);
+</script>
+
+</body>
+</html>

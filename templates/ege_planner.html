@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ЕГЭ Планер</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Playfair Display', serif;
+            min-height: 100vh;
+            background: url('{{ url_for('static', filename='8.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Навигация */
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .nav-custom .btn i { margin-right: 8px; }
+        .nav-custom .btn-outline-success {
+            color: #2C2C2C;
+            border-color: rgba(44,44,44,0.15);
+        }
+        .nav-custom .btn-outline-success:hover {
+            background: #b35a6c;
+            color: white;
+            border-color: #b35a6c;
+        }
+        .nav-custom .btn-success {
+            background: #b35a6c;
+            border-color: #b35a6c;
+            color: white;
+        }
+        .nav-custom .btn-success:hover {
+            background: #9a4a5a;
+        }
+
+        /* Заголовок */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2C2C2C;
+            font-family: 'Playfair Display', serif;
+        }
+        .page-header h1 small {
+            font-size: 0.6rem;
+            opacity: 0.4;
+            font-weight: 400;
+            display: block;
+        }
+
+        /* Карточки предметов */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .subject-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .subject-card:hover::before {
+            opacity: 1;
+        }
+        .subject-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+        .subject-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .subject-card .card-header .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2C2C2C;
+        }
+        .subject-card .card-header .icon {
+            font-size: 2rem;
+        }
+        .subject-card .card-header .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Прогресс */
+        .progress-container {
+            margin: 10px 0 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .progress-container .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(44,44,44,0.5);
+            font-family: 'Inter', sans-serif;
+        }
+        .progress-container .progress-track {
+            height: 6px;
+            background: rgba(44,44,44,0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .progress-container .progress-track .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s ease;
+        }
+
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 8px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .stat-item .number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+        }
+        .stat-item .label {
+            font-size: 0.6rem;
+            color: rgba(44,44,44,0.4);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Детали */
+        .subject-detail {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+            z-index: 1;
+        }
+        .subject-detail.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .note-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #b35a6c;
+            transition: all 0.3s ease;
+        }
+        .note-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .note-item .note-content { flex: 1; }
+        .note-item .note-content .note-date {
+            font-size: 0.7rem;
+            color: rgba(44,44,44,0.4);
+            font-family: 'Inter', sans-serif;
+        }
+        .note-item .note-content .note-text {
+            font-size: 0.9rem;
+            color: #2C2C2C;
+        }
+        .note-item .note-content .note-topics {
+            font-size: 0.7rem;
+            color: rgba(44,44,44,0.5);
+            font-family: 'Inter', sans-serif;
+        }
+        .note-item .note-check { margin-right: 12px; }
+        .note-item .note-check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #b35a6c;
+            cursor: pointer;
+        }
+        .note-item .note-delete {
+            background: none;
+            border: none;
+            color: rgba(44,44,44,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .note-item .note-delete:hover {
+            color: #b35a6c;
+            transform: scale(1.1);
+        }
+
+        .exam-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .exam-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .exam-item .exam-date {
+            font-size: 0.8rem;
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+        }
+        .exam-item .exam-score {
+            font-weight: 700;
+            color: #b35a6c;
+        }
+
+        .btn-custom {
+            border-radius: 40px;
+            padding: 6px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-custom-primary {
+            background: #b35a6c;
+            color: white;
+        }
+        .btn-custom-primary:hover {
+            background: #9a4a5a;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .form-control-custom {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #2C2C2C;
+            padding: 8px 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .form-control-custom:focus {
+            outline: none;
+            border-color: #b35a6c;
+            background: rgba(255,255,255,0.1);
+        }
+        .form-control-custom::placeholder {
+            color: rgba(44,44,44,0.3);
+        }
+
+        .modal-content-custom {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+
+        /* Мотивационная цитата */
+        .quote-box {
+            margin-top: 30px;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+            position: relative;
+        }
+        .quote-box .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #2C2C2C;
+            font-family: 'Playfair Display', serif;
+        }
+        .quote-box .quote-author {
+            font-size: 0.8rem;
+            color: rgba(44,44,44,0.4);
+            font-family: 'Inter', sans-serif;
+            margin-top: 6px;
+        }
+        .quote-box .quote-emoji {
+            font-size: 2rem;
+            position: absolute;
+            opacity: 0.15;
+        }
+        .quote-box .quote-emoji.left { left: 20px; top: 10px; }
+        .quote-box .quote-emoji.right { right: 20px; bottom: 10px; }
+
+        @media (max-width: 768px) {
+            .subject-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.5rem; }
+            .nav-custom .btn { font-size: 0.65rem; padding: 5px 10px; }
+            .quote-box .quote-text { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Навигация -->
+    <nav class="nav-custom">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits') }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals') }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('ege_planner') }}" class="btn btn-success">
+                <i class="fas fa-rocket"></i> ЕГЭ Планер
+            </a>
+            <a href="{{ url_for('ege_center') }}" class="btn btn-outline-success" style="background: #c66f80; color: white; border-color: #c66f80;">
+                <i class="fas fa-star"></i> ЕГЭ Центр
+            </a>
+            <a href="{{ url_for('sprint') }}" class="btn btn-outline-success">
+    <i class="fas fa-running"></i> Спринт
+</a>
+            <a href="{{ url_for('ege_calendar_page') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-check"></i> ЕГЭ Календарь
+            </a>
+            <a href="{{ url_for('ege_exams') }}" class="btn btn-outline-success">
+                <i class="fas fa-trophy"></i> Мои пробники
+            </a>
+            <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <h1>
+            🚀 ЕГЭ Планер
+            <small>Твой путь к 100 баллам начинается здесь</small>
+        </h1>
+    </div>
+
+    <!-- Карточки предметов -->
+    <div class="subject-grid" id="subjectGrid">
+        {% for key, subject in data.subjects.items() %}
+        <div class="subject-card" onclick="toggleSubject('{{ key }}')" id="card-{{ key }}">
+            <div class="card-header">
+                <div>
+                    <span class="icon">{{ subject.icon }}</span>
+                    <span class="title">{{ subject.name }}</span>
+                </div>
+                <span class="color-dot" style="background:{{ subject.color }};"></span>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Прогресс подготовки</span>
+                    <span id="progress-text-{{ key }}">{{ subject.progress }}%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill-{{ key }}"
+                         style="width: {{ subject.progress }}%; background: {{ subject.color }};"></div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="number" id="tasks-count-{{ key }}">{{ subject.tasks|length }}</div>
+                    <div class="label">Занятий</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number" id="exams-count-{{ key }}">{{ subject.exams|length }}</div>
+                    <div class="label">Пробников</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number" id="completed-count-{{ key }}">
+                        {{ subject.tasks|selectattr('completed', 'equalto', true)|list|length }}
+                    </div>
+                    <div class="label">Выполнено</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number" id="avg-score-{{ key }}">
+                        {% set scores = subject.exams|map(attribute='score')|list %}
+                        {% if scores %}
+                            {{ (scores|sum / scores|length)|round(0)|int }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </div>
+                    <div class="label">Средний балл</div>
+                </div>
+            </div>
+
+            <button class="btn btn-custom btn-custom-primary w-100 mt-2"
+                    onclick="event.stopPropagation(); openAddTask('{{ key }}')">
+                <i class="fas fa-plus"></i> Добавить занятие
+            </button>
+
+            <div class="subject-detail" id="detail-{{ key }}">
+                <h6 style="margin:12px 0 8px; font-size:0.85rem; color:#2C2C2C;">
+                    <i class="fas fa-sticky-note" style="color:#b35a6c;"></i> Мои занятия
+                </h6>
+                <div id="tasks-{{ key }}">
+                    {% for task in subject.tasks %}
+                    <div class="note-item">
+                        <div class="note-check">
+                            <input type="checkbox" {% if task.completed %}checked{% endif %}
+                                   onchange="toggleTask('{{ key }}', {{ loop.index0 }})">
+                        </div>
+                        <div class="note-content">
+                            <div class="note-date">{{ task.date }} {{ task.time }}</div>
+                            <div class="note-text">{{ task.note }}</div>
+                            {% if task.topics %}
+                            <div class="note-topics">📌 {{ task.topics|join(', ') }}</div>
+                            {% endif %}
+                        </div>
+                        <button class="note-delete" onclick="deleteTask('{{ key }}', {{ loop.index0 }})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    {% else %}
+                    <div style="text-align:center; padding:12px; color:rgba(44,44,44,0.3); font-size:0.85rem;">
+                        Нет занятий. Добавь первое! ✨
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <h6 style="margin:16px 0 8px; font-size:0.85rem; color:#2C2C2C;">
+                    <i class="fas fa-trophy" style="color:#f39c12;"></i> Пробники
+                </h6>
+                <div id="exams-{{ key }}">
+                    {% for exam in subject.exams %}
+                    <div class="exam-item">
+                        <span class="exam-date">{{ exam.date }}</span>
+                        <span class="exam-score">{{ exam.score }} / {{ exam.max_score }}</span>
+                    </div>
+                    {% else %}
+                    <div style="text-align:center; padding:12px; color:rgba(44,44,44,0.3); font-size:0.85rem;">
+                        Пробников пока нет. Добавь результат! 🎯
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button class="btn btn-custom btn-custom-primary w-100 mt-2"
+                        style="background:#f39c12;" onclick="openAddExam('{{ key }}')">
+                    <i class="fas fa-plus"></i> Добавить пробник
+                </button>
+
+                <div class="mt-3">
+                    <label style="font-size:0.75rem; color:rgba(44,44,44,0.4); font-family:'Inter',sans-serif;">
+                        Настрой прогресс вручную
+                    </label>
+                    <div class="d-flex gap-2">
+                        <input type="range" min="0" max="100" value="{{ subject.progress }}"
+                               class="form-control-custom" style="flex:1;"
+                               onchange="updateProgress('{{ key }}', this.value)"
+                               id="progress-slider-{{ key }}">
+                        <span style="font-family:'Inter',sans-serif; font-weight:600; min-width:40px; text-align:center;">
+                            {{ subject.progress }}%
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Мотивационная цитата -->
+    <div class="quote-box">
+        <span class="quote-emoji left">🌟</span>
+        <span class="quote-emoji right">💫</span>
+        <div class="quote-text">
+            "Успех — это сумма маленьких усилий, повторяемых день за днём."
+        </div>
+        <div class="quote-author">— Роберт Коллиер</div>
+    </div>
+</div>
+
+<!-- Модалка добавления занятия -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-plus-circle" style="color:#b35a6c;"></i> Добавить занятие</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="addTaskSubject">
+                <div class="mb-3">
+                    <label class="form-label">Дата</label>
+                    <input type="date" class="form-control form-control-custom" id="addTaskDate">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Время</label>
+                    <input type="time" class="form-control form-control-custom" id="addTaskTime">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Заметка</label>
+                    <textarea class="form-control form-control-custom" id="addTaskNote" rows="2" placeholder="Что разбирал?"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Номера заданий/темы</label>
+                    <input type="text" class="form-control form-control-custom" id="addTaskTopics" placeholder="№6, №7, тригонометрия">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-custom btn-custom-primary" onclick="saveTask()">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка добавления пробника -->
+<div class="modal fade" id="addExamModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-trophy" style="color:#f39c12;"></i> Добавить пробник</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="addExamSubject">
+                <div class="mb-3">
+                    <label class="form-label">Дата</label>
+                    <input type="date" class="form-control form-control-custom" id="addExamDate">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Баллы</label>
+                    <input type="number" class="form-control form-control-custom" id="addExamScore" placeholder="Например: 72">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Максимальный балл</label>
+                    <input type="number" class="form-control form-control-custom" id="addExamMax" placeholder="100" value="100">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-custom btn-custom-primary" onclick="saveExam()" style="background:#f39c12;">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ============================================================
+    // ПЕРЕКЛЮЧЕНИЕ КАРТОЧКИ
+    // ============================================================
+    function toggleSubject(key) {
+        const detail = document.getElementById('detail-' + key);
+        const card = document.getElementById('card-' + key);
+        detail.classList.toggle('active');
+        card.style.borderColor = detail.classList.contains('active') ? '#b35a6c' : 'rgba(255,255,255,0.08)';
+    }
+
+    // ============================================================
+    // ДОБАВЛЕНИЕ ЗАНЯТИЯ
+    // ============================================================
+    function openAddTask(key) {
+        document.getElementById('addTaskSubject').value = key;
+        document.getElementById('addTaskDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('addTaskTime').value = '';
+        document.getElementById('addTaskNote').value = '';
+        document.getElementById('addTaskTopics').value = '';
+        const modal = new bootstrap.Modal(document.getElementById('addTaskModal'));
+        modal.show();
+    }
+
+    function saveTask() {
+        const subject = document.getElementById('addTaskSubject').value;
+        const date = document.getElementById('addTaskDate').value;
+        const time = document.getElementById('addTaskTime').value;
+        const note = document.getElementById('addTaskNote').value;
+        const topicsStr = document.getElementById('addTaskTopics').value;
+        const topics = topicsStr ? topicsStr.split(',').map(t => t.trim()) : [];
+
+        if (!date || !note) {
+            alert('Пожалуйста, заполните дату и заметку!');
+            return;
+        }
+
+        fetch('/api/ege_planner/add_task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, date, time, note, topics })
+        }).then(r => r.json()).then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Ошибка при добавлении');
+            }
+        });
+    }
+
+    // ============================================================
+    // УДАЛЕНИЕ ЗАНЯТИЯ
+    // ============================================================
+    function deleteTask(subject, index) {
+        if (!confirm('Удалить это занятие?')) return;
+        fetch('/api/ege_planner/delete_task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, task_index: index })
+        }).then(r => r.json()).then(data => {
+            if (data.success) location.reload();
+        });
+    }
+
+    // ============================================================
+    // ВЫПОЛНЕНИЕ ЗАДАНИЯ
+    // ============================================================
+    function toggleTask(subject, index) {
+        fetch('/api/ege_planner/toggle_task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, task_index: index })
+        }).then(r => r.json()).then(data => {
+            if (data.success) location.reload();
+        });
+    }
+
+    // ============================================================
+    // ДОБАВЛЕНИЕ ПРОБНИКА
+    // ============================================================
+    function openAddExam(key) {
+        document.getElementById('addExamSubject').value = key;
+        document.getElementById('addExamDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('addExamScore').value = '';
+        document.getElementById('addExamMax').value = '100';
+        const modal = new bootstrap.Modal(document.getElementById('addExamModal'));
+        modal.show();
+    }
+
+    function saveExam() {
+        const subject = document.getElementById('addExamSubject').value;
+        const date = document.getElementById('addExamDate').value;
+        const score = parseInt(document.getElementById('addExamScore').value);
+        const max_score = parseInt(document.getElementById('addExamMax').value) || 100;
+
+        if (!date || isNaN(score)) {
+            alert('Пожалуйста, заполните дату и баллы!');
+            return;
+        }
+
+        fetch('/api/ege_planner/add_exam', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, date, score, max_score })
+        }).then(r => r.json()).then(data => {
+            if (data.success) location.reload();
+        });
+    }
+
+    // ============================================================
+    // ОБНОВЛЕНИЕ ПРОГРЕССА
+    // ============================================================
+    function updateProgress(subject, value) {
+        document.getElementById('progress-text-' + subject).textContent = value + '%';
+        document.getElementById('progress-fill-' + subject).style.width = value + '%';
+
+        fetch('/api/ege_planner/update_progress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, progress: parseInt(value) })
+        });
+    }
+
+    // ============================================================
+    // АВТОМАТИЧЕСКОЕ ОТКРЫТИЕ ПЕРВОЙ КАРТОЧКИ
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const firstCard = document.querySelector('.subject-card');
+        if (firstCard) {
+            const key = firstCard.id.replace('card-', '');
+            toggleSubject(key);
+        }
+    });
+</script>
+
+</body>
+</html>

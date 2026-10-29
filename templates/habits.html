@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Привычки</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #e8efe2;
+            padding: 20px;
+        }
+        .habit-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .habit-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .day-cell {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e0e0e0;
+        }
+        .day-cell:hover {
+            transform: scale(1.1);
+        }
+        .day-cell.done {
+            background: #5f7f3d;
+            border-color: #5f7f3d;
+        }
+        .day-cell.empty {
+            background: #f0f0f0;
+        }
+        .day-cell.today {
+            border: 2px solid #ff6b9d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #e0e0e0; padding: 10px 20px; border-radius: 12px; margin-bottom: 20px;">
+        <div class="container-fluid justify-content-center">
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="{{ url_for('index', style=current_style) }}" class="btn btn-outline-success">
+                    <i class="fas fa-calendar-alt"></i> Расписание
+                </a>
+                <a href="{{ url_for('manage_habits', style=current_style) }}" class="btn btn-success">
+                    <i class="fas fa-fire"></i> Привычки
+                </a>
+                <a href="{{ url_for('manage_goals', style=current_style) }}" class="btn btn-outline-success">
+                    <i class="fas fa-bullseye"></i> Цели
+                </a>
+                <a href="{{ url_for('manage_ege', style=current_style) }}" class="btn btn-outline-success">
+                    <i class="fas fa-brain"></i> ЕГЭ
+                </a>
+                <a href="{{ url_for('manage_students', style=current_style) }}" class="btn btn-outline-success">
+                    <i class="fas fa-user-graduate"></i> Ученики
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4"><i class="fas fa-fire text-warning"></i> Трекер привычек</h1>
+
+        <!-- Форма добавления -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="POST" class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="name" placeholder="Новая привычка..." required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success w-100">Добавить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Список привычек -->
+        <div class="row">
+            {% for habit in habits %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="habit-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">{{ habit.name }}</h5>
+                        <button class="btn btn-sm btn-danger delete-habit" data-id="{{ loop.index0 }}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex flex-wrap gap-1">
+                        {% for i in range(30, 0, -1) %}
+                            {% set date = (now - timedelta(days=i)).strftime('%Y-%m-%d') %}
+                            <div class="day-cell {% if date in habit.dates %}done{% else %}empty{% endif %}"
+                                 data-habit="{{ loop.index0 }}" data-date="{{ date }}"
+                                 title="{{ date }}"></div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        {{ habit.dates|length }} дней из 30
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle habit
+        document.querySelectorAll('.day-cell').forEach(cell => {
+            cell.addEventListener('click', function() {
+                const habitId = this.dataset.habit;
+                const date = this.dataset.date;
+                fetch('/toggle_habit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({habit_id: parseInt(habitId), date: date})
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        this.classList.toggle('done');
+                        this.classList.toggle('empty');
+                    }
+                });
+            });
+        });
+
+        // Delete habit
+        document.querySelectorAll('.delete-habit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('Удалить привычку?')) {
+                    const habitId = this.dataset.id;
+                    fetch('/delete_habit', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({habit_id: parseInt(habitId)})
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

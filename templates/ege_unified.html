@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ЕГЭ Подготовка</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            min-height: 100vh;
+            background: url('{{ url_for('static', filename='8.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+            color: #1a1a2e;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.04);
+            z-index: 0;
+        }
+
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        /* Навигация */
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 700 !important;
+        }
+        .nav-custom .btn i { margin-right: 8px; }
+        .nav-custom .btn-outline-success { color: #1a1a2e; border-color: rgba(26,26,46,0.15); }
+        .nav-custom .btn-outline-success:hover { background: #b35a6c; color: white; border-color: #b35a6c; }
+        .nav-custom .btn-success { background: #b35a6c; border-color: #b35a6c; color: white; }
+        .nav-custom .btn-success:hover { background: #9a4a5a; }
+
+        /* Заголовок страницы */
+        .page-header {
+            text-align: center;
+            padding: 16px 0 20px;
+        }
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800 !important;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+        }
+        .page-header h1 span { color: #b35a6c; }
+        .page-header .subtitle {
+            font-size: 0.9rem;
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600 !important;
+        }
+
+        /* ============================================================
+           ВКЛАДКИ
+           ============================================================ */
+        .tabs-container {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 20px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            border: none;
+            border-radius: 40px;
+            padding: 10px 24px;
+            background: rgba(255,255,255,0.04);
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.10);
+            transform: translateY(-2px);
+        }
+        .tab-btn.active {
+            background: rgba(179,90,108,0.15);
+            color: #b35a6c;
+            box-shadow: 0 4px 20px rgba(179,90,108,0.1);
+        }
+        .tab-btn i { font-size: 1rem; }
+        .tab-btn .badge-tab {
+            background: rgba(179,90,108,0.1);
+            color: #b35a6c;
+            font-size: 0.6rem;
+            padding: 1px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================
+           КОНТЕНТ ВКЛАДОК (стили из оригинальных страниц)
+           ============================================================ */
+
+        /* --- Вкладка: Дашборд --- */
+        .stats-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .stats-grid-4 { grid-template-columns: 1fr 1fr; }
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 900;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+        .stat-card .label {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .subject-progress-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 768px) {
+            .subject-progress-grid { grid-template-columns: 1fr; }
+        }
+
+        .sp-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sp-item .sp-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .sp-item .sp-info { flex: 1; }
+        .sp-item .sp-info .sp-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+        }
+        .sp-item .sp-info .sp-bar {
+            height: 4px;
+            background: rgba(26,26,46,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .sp-item .sp-info .sp-bar .sp-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.8s ease;
+        }
+        .sp-item .sp-percent {
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+
+        /* --- Вкладка: Планер --- */
+        .planner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .planner-grid { grid-template-columns: 1fr; }
+        }
+
+        .planner-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 16px 18px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+        }
+        .planner-card:hover { background: rgba(255,255,255,0.08); }
+        .planner-card .pc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .planner-card .pc-header .pc-title {
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+        .planner-card .pc-header .pc-icon { font-size: 1.5rem; }
+
+        .task-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .task-item:hover { background: rgba(255,255,255,0.06); }
+        .task-item .task-check input[type="checkbox"] {
+            accent-color: #b35a6c;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .task-item .task-info { flex: 1; }
+        .task-item .task-info .task-text {
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+        }
+        .task-item .task-info .task-text.done {
+            text-decoration: line-through;
+            opacity: 0.4;
+        }
+        .task-item .task-info .task-date {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.3);
+            font-family: 'Inter', sans-serif;
+        }
+        .task-item .task-delete {
+            background: none;
+            border: none;
+            color: rgba(26,26,46,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .task-item .task-delete:hover { color: #b35a6c; }
+
+        .planner-form {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .planner-form input, .planner-form textarea {
+            flex: 1;
+            min-width: 100px;
+            border: 1px solid rgba(26,26,46,0.06);
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.04);
+            color: #1a1a2e;
+        }
+        .planner-form input:focus, .planner-form textarea:focus {
+            outline: none;
+            border-color: #b35a6c;
+        }
+        .planner-form input::placeholder, .planner-form textarea::placeholder {
+            color: rgba(26,26,46,0.2);
+        }
+        .planner-form .planner-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 6px 18px;
+            background: #b35a6c;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .planner-form .planner-btn:hover { background: #9a4a5a; }
+
+        /* --- Вкладка: Календарь --- */
+        .ege-calendar-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(7, 1fr);
+            gap: 2px;
+        }
+        .ege-calendar-grid .time-slot {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.3);
+            text-align: center;
+            padding: 4px 0;
+            font-family: 'Inter', sans-serif;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .ege-calendar-grid .day-header {
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            padding: 6px 0;
+            font-family: 'Inter', sans-serif;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .ege-calendar-grid .day-header.today { color: #b35a6c; }
+        .ege-calendar-grid .day-header .date-num {
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 50%;
+            text-align: center;
+        }
+        .ege-calendar-grid .day-header.today .date-num {
+            background: #b35a6c;
+            color: white;
+        }
+        .ege-calendar-grid .day-cell {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            min-height: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+        .ege-calendar-grid .day-cell:hover { background: rgba(255,255,255,0.05); }
+
+        .cal-event {
+            position: absolute;
+            left: 2px;
+            right: 2px;
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 0.5rem;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            min-height: 16px;
+            z-index: 2;
+        }
+        .cal-event:hover { transform: scale(1.02); z-index: 3; }
+        .cal-event .event-title { font-weight: 600; font-size: 0.5rem; }
+        .cal-event .event-time { font-size: 0.45rem; opacity: 0.8; }
+        .cal-event.done { opacity: 0.7; }
+        .cal-event.done::after { content: ' ✓'; color: #4CAF50; }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .calendar-controls .week-label {
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+        .calendar-controls .nav-btns {
+            display: flex;
+            gap: 6px;
+        }
+        .calendar-controls .nav-btns button {
+            border: none;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.06);
+            color: #1a1a2e;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .calendar-controls .nav-btns button:hover {
+            background: rgba(255,255,255,0.12);
+            transform: scale(1.05);
+        }
+        .calendar-controls .btn-today {
+            border: none;
+            border-radius: 40px;
+            padding: 6px 16px;
+            background: #b35a6c;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .calendar-controls .btn-today:hover { background: #9a4a5a; }
+
+        /* --- Вкладка: Пробники --- */
+        .exams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .exam-folder {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 140px;
+        }
+        .exam-folder:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.10);
+        }
+        .exam-folder .folder-color-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+        }
+        .exam-folder .folder-icon {
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+        .exam-folder .folder-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            color: #1a1a2e;
+        }
+        .exam-folder .folder-date {
+            font-size: 0.65rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+        }
+        .exam-folder .folder-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .exam-folder .folder-status .exam-status {
+            font-size: 0.55rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        .exam-folder .folder-status .exam-status.done {
+            background: rgba(46,125,50,0.12);
+            color: #2e7d32;
+        }
+        .exam-folder .folder-status .exam-status.pending {
+            background: rgba(230,126,34,0.12);
+            color: #e67e22;
+        }
+        .exam-folder .folder-status .exam-status.failed {
+            background: rgba(192,57,43,0.12);
+            color: #c0392b;
+        }
+        .exam-folder .folder-status .exam-score {
+            font-size: 0.8rem;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(26,26,46,0.2);
+            grid-column: 1 / -1;
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-state .text { font-size: 0.9rem; font-family: 'Inter', sans-serif; font-weight: 500; }
+
+        /* ============================================================
+           УВЕДОМЛЕНИЯ
+           ============================================================ */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26,26,46,0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-left: 4px solid #b35a6c;
+            animation: slideUp 0.4s ease;
+        }
+        .notification.hide {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.6rem; }
+            .tab-btn { font-size: 0.7rem; padding: 6px 14px; }
+            .nav-custom .btn { font-size: 0.6rem; padding: 4px 8px; }
+            .stats-grid-4 { grid-template-columns: 1fr 1fr; }
+            .subject-progress-grid { grid-template-columns: 1fr; }
+            .planner-grid { grid-template-columns: 1fr; }
+            .exams-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Навигация -->
+    <nav class="nav-custom">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits') }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals') }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('ege_unified') }}" class="btn btn-success">
+                <i class="fas fa-graduation-cap"></i> ЕГЭ
+            </a>
+            <a href="{{ url_for('sprint') }}" class="btn btn-outline-success">
+                <i class="fas fa-running"></i> Спринт
+            </a>
+            <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <h1>📚 <span>ЕГЭ</span> Подготовка</h1>
+        <div class="subtitle">Всё в одном месте: дашборд, планер, календарь и пробники</div>
+    </div>
+
+    <!-- ============================================================
+         ВКЛАДКИ
+         ============================================================ -->
+    <div class="tabs-container">
+        <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">
+                <i class="fas fa-chart-pie"></i> Дашборд
+            </button>
+            <button class="tab-btn" data-tab="planner" onclick="switchTab('planner')">
+                <i class="fas fa-rocket"></i> Планер
+                <span class="badge-tab" id="plannerBadge">0</span>
+            </button>
+            <button class="tab-btn" data-tab="calendar" onclick="switchTab('calendar')">
+                <i class="fas fa-calendar-check"></i> Календарь
+            </button>
+            <button class="tab-btn" data-tab="exams" onclick="switchTab('exams')">
+                <i class="fas fa-trophy"></i> Пробники
+                <span class="badge-tab" id="examsBadge">0</span>
+            </button>
+        </div>
+
+        <!-- ============================================================
+             ВКЛАДКА: ДАШБОРД
+             ============================================================ -->
+        <div class="tab-content active" id="tab-dashboard">
+            <!-- Статистика -->
+            <div class="stats-grid-4">
+                <div class="stat-card">
+                    <div class="num" id="dashTotalExams">0</div>
+                    <div class="label">Всего пробников</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="dashDoneExams">0</div>
+                    <div class="label">Пройдено</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="dashAvgScore">0</div>
+                    <div class="label">Средний балл</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="dashTasks">0</div>
+                    <div class="label">Занятий</div>
+                </div>
+            </div>
+
+            <!-- Прогресс по предметам -->
+            <h5 style="font-family:'Inter',sans-serif; font-weight:700; color:rgba(26,26,46,0.5); margin-bottom:12px;">
+                <i class="fas fa-chart-line" style="color:#b35a6c;"></i> Прогресс по предметам
+            </h5>
+            <div class="subject-progress-grid" id="dashProgress">
+                <div class="sp-item">
+                    <span class="sp-dot" style="background:#b35a6c;"></span>
+                    <div class="sp-info">
+                        <div class="sp-name">Математика</div>
+                        <div class="sp-bar"><div class="sp-fill" id="dash-math" style="width:0%; background:#b35a6c;"></div></div>
+                    </div>
+                    <span class="sp-percent" id="dash-math-text">0%</span>
+                </div>
+                <div class="sp-item">
+                    <span class="sp-dot" style="background:#c66f80;"></span>
+                    <div class="sp-info">
+                        <div class="sp-name">Русский язык</div>
+                        <div class="sp-bar"><div class="sp-fill" id="dash-russian" style="width:0%; background:#c66f80;"></div></div>
+                    </div>
+                    <span class="sp-percent" id="dash-russian-text">0%</span>
+                </div>
+                <div class="sp-item">
+                    <span class="sp-dot" style="background:#4a6644;"></span>
+                    <div class="sp-info">
+                        <div class="sp-name">Физика</div>
+                        <div class="sp-bar"><div class="sp-fill" id="dash-physics" style="width:0%; background:#4a6644;"></div></div>
+                    </div>
+                    <span class="sp-percent" id="dash-physics-text">0%</span>
+                </div>
+                <div class="sp-item">
+                    <span class="sp-dot" style="background:#899464;"></span>
+                    <div class="sp-info">
+                        <div class="sp-name">Информатика</div>
+                        <div class="sp-bar"><div class="sp-fill" id="dash-informatics" style="width:0%; background:#899464;"></div></div>
+                    </div>
+                    <span class="sp-percent" id="dash-informatics-text">0%</span>
+                </div>
+            </div>
+
+            <!-- Мотивационная цитата -->
+            <div style="margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.04); border-radius:12px; text-align:center; border-left:4px solid #b35a6c;">
+                <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:1rem; color:#1a1a2e;" id="dashQuote">
+                    "Успех — это сумма маленьких усилий, повторяемых день за днём."
+                </div>
+                <div style="font-family:'Inter',sans-serif; font-size:0.7rem; color:rgba(26,26,46,0.3); margin-top:4px;" id="dashQuoteAuthor">
+                    — Роберт Коллиер
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             ВКЛАДКА: ПЛАНЕР
+             ============================================================ -->
+        <div class="tab-content" id="tab-planner">
+            <div class="planner-grid" id="plannerGrid">
+                <!-- Генерируется JS -->
+            </div>
+        </div>
+
+        <!-- ============================================================
+             ВКЛАДКА: КАЛЕНДАРЬ
+             ============================================================ -->
+        <div class="tab-content" id="tab-calendar">
+            <div class="calendar-controls">
+                <div class="week-label" id="calWeekLabel">Неделя</div>
+                <div class="nav-btns">
+                    <button onclick="changeCalWeek(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="changeCalWeek(1)"><i class="fas fa-chevron-right"></i></button>
+                    <button class="btn-today" onclick="goCalToday()">Сегодня</button>
+                </div>
+            </div>
+            <div class="ege-calendar-grid" id="calGrid">
+                <!-- Генерируется JS -->
+            </div>
+        </div>
+
+        <!-- ============================================================
+             ВКЛАДКА: ПРОБНИКИ
+             ============================================================ -->
+        <div class="tab-content" id="tab-exams">
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;" id="examMonths">
+                <!-- Генерируется JS -->
+            </div>
+            <div class="exams-grid" id="examGrid">
+                <!-- Генерируется JS -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     МОДАЛКИ
+     ============================================================ -->
+<!-- Модалка добавления задания -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border-radius:20px;">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-plus-circle" style="color:#b35a6c;"></i> Добавить занятие</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="addTaskSubject">
+                <div class="mb-3">
+                    <label class="form-label">Дата</label>
+                    <input type="date" class="form-control" id="addTaskDate" style="border-radius:12px;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Время</label>
+                    <input type="time" class="form-control" id="addTaskTime" style="border-radius:12px;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Заметка</label>
+                    <textarea class="form-control" id="addTaskNote" rows="2" placeholder="Что разбирал?" style="border-radius:12px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:40px;">Отмена</button>
+                <button type="button" class="btn" onclick="saveTask()" style="background:#b35a6c; color:white; border-radius:40px;">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка добавления пробника -->
+<div class="modal fade" id="addExamModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border-radius:20px;">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-trophy" style="color:#f39c12;"></i> Добавить пробник</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="addExamMonth">
+                <div class="mb-3">
+                    <label class="form-label">Предмет</label>
+                    <select class="form-control" id="addExamSubject" style="border-radius:12px;">
+                        <option value="Математика">📐 Математика</option>
+                        <option value="Русский язык">📖 Русский язык</option>
+                        <option value="Физика">⚡ Физика</option>
+                        <option value="Информатика">💻 Информатика</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Дата</label>
+                    <input type="date" class="form-control" id="addExamDate" style="border-radius:12px;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Баллы (0-100)</label>
+                    <input type="number" class="form-control" id="addExamScore" min="0" max="100" placeholder="Введите баллы..." style="border-radius:12px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:40px;">Отмена</button>
+                <button type="button" class="btn" onclick="saveExam()" style="background:#f39c12; color:white; border-radius:40px;">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ============================================================
+    // ДАННЫЕ (из Flask)
+    // ============================================================
+    const egePlannerData = {{ data|tojson|safe }};
+    const egeCalendarData = {{ ege_calendar|tojson|safe }};
+    const studentsList = {{ students|tojson|safe }};
+
+    // Данные пробников (встроенные)
+    const monthsData = [
+        { id: 'sep', name: 'Сентябрь', emoji: '🍂', year: 2026, exams: [
+            { id: 'sep_1', date: '6 сентября', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'sep_2', date: '7 сентября', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'sep_3', date: '13 сентября', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'sep_4', date: '14 сентября', subject: 'Информатика', color: '#899464', score: null, status: 'pending' },
+            { id: 'sep_5', date: '20 сентября', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'sep_6', date: '21 сентября', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'sep_7', date: '27 сентября', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'sep_8', date: '28 сентября', subject: 'Информатика', color: '#899464', score: null, status: 'pending' }
+        ]},
+        { id: 'oct', name: 'Октябрь', emoji: '🎃', year: 2026, exams: [
+            { id: 'oct_1', date: '4 октября', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'oct_2', date: '5 октября', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'oct_3', date: '11 октября', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'oct_4', date: '12 октября', subject: 'Информатика', color: '#899464', score: null, status: 'pending' },
+            { id: 'oct_5', date: '18 октября', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'oct_6', date: '19 октября', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'oct_7', date: '25 октября', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'oct_8', date: '26 октября', subject: 'Информатика', color: '#899464', score: null, status: 'pending' }
+        ]},
+        { id: 'nov', name: 'Ноябрь', emoji: '🍁', year: 2026, exams: [
+            { id: 'nov_1', date: '1 ноября', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'nov_2', date: '2 ноября', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'nov_3', date: '8 ноября', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'nov_4', date: '9 ноября', subject: 'Информатика', color: '#899464', score: null, status: 'pending' },
+            { id: 'nov_5', date: '15 ноября', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'nov_6', date: '16 ноября', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'nov_7', date: '22 ноября', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'nov_8', date: '23 ноября', subject: 'Информатика', color: '#899464', score: null, status: 'pending' }
+        ]},
+        { id: 'dec', name: 'Декабрь', emoji: '🎄', year: 2026, exams: [
+            { id: 'dec_1', date: '6 декабря', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'dec_2', date: '7 декабря', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'dec_3', date: '13 декабря', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'dec_4', date: '14 декабря', subject: 'Информатика', color: '#899464', score: null, status: 'pending' },
+            { id: 'dec_5', date: '20 декабря', subject: 'Математика', color: '#b35a6c', score: null, status: 'pending' },
+            { id: 'dec_6', date: '21 декабря', subject: 'Русский язык', color: '#c66f80', score: null, status: 'pending' },
+            { id: 'dec_7', date: '27 декабря', subject: 'Физика', color: '#4a6644', score: null, status: 'pending' },
+            { id: 'dec_8', date: '28 декабря', subject: 'Информатика', color: '#899464', score: null, status: 'pending' }
+        ]}
+    ];
+
+    let currentExamMonth = 0;
+    let currentCalWeek = 0;
+
+    // ============================================================
+    // ЗАГРУЗКА ИЗ LOCALSTORAGE
+    // ============================================================
+    function loadExamData() {
+        const saved = localStorage.getItem('ege_exams_data_v3');
+        if (!saved) return;
+        try {
+            const data = JSON.parse(saved);
+            data.forEach((monthData, mi) => {
+                if (monthsData[mi]) {
+                    monthData.exams.forEach((examData, ei) => {
+                        if (monthsData[mi].exams[ei]) {
+                            monthsData[mi].exams[ei].score = examData.score;
+                            monthsData[mi].exams[ei].status = examData.status;
+                            monthsData[mi].exams[ei].note = examData.note || '';
+                        }
+                    });
+                }
+            });
+        } catch(e) {}
+    }
+
+    function saveExamData() {
+        const data = monthsData.map(month => ({
+            id: month.id,
+            year: month.year,
+            exams: month.exams.map(e => ({
+                id: e.id,
+                score: e.score,
+                status: e.status,
+                note: e.note || ''
+            }))
+        }));
+        localStorage.setItem('ege_exams_data_v3', JSON.stringify(data));
+    }
+
+    // ============================================================
+    // ВКЛАДКИ
+    // ============================================================
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+
+        if (tab === 'planner') renderPlanner();
+        if (tab === 'calendar') renderCalendar();
+        if (tab === 'exams') renderExams();
+        if (tab === 'dashboard') updateDashboard();
+    }
+
+    // ============================================================
+    // ДАШБОРД
+    // ============================================================
+    function updateDashboard() {
+        // Статистика пробников
+        let total = 0, done = 0, totalScore = 0, scoreCount = 0;
+        monthsData.forEach(month => {
+            month.exams.forEach(e => {
+                total++;
+                if (e.status === 'done') {
+                    done++;
+                    if (e.score !== null) { totalScore += e.score; scoreCount++; }
+                }
+            });
+        });
+        document.getElementById('dashTotalExams').textContent = total;
+        document.getElementById('dashDoneExams').textContent = done;
+        document.getElementById('dashAvgScore').textContent = scoreCount > 0 ? Math.round(totalScore / scoreCount) : 0;
+
+        // Статистика занятий
+        let tasksCount = 0;
+        for (const key in egePlannerData.subjects) {
+            tasksCount += egePlannerData.subjects[key].tasks ? egePlannerData.subjects[key].tasks.length : 0;
+        }
+        document.getElementById('dashTasks').textContent = tasksCount;
+
+        // Прогресс по предметам
+        const subjects = {
+            math: { name: 'Математика', color: '#b35a6c' },
+            russian: { name: 'Русский язык', color: '#c66f80' },
+            physics: { name: 'Физика', color: '#4a6644' },
+            informatics: { name: 'Информатика', color: '#899464' }
+        };
+
+        for (const key in subjects) {
+            const data = egePlannerData.subjects[key];
+            const progress = data ? data.progress || 0 : 0;
+            document.getElementById(`dash-${key}`).style.width = progress + '%';
+            document.getElementById(`dash-${key}-text`).textContent = progress + '%';
+        }
+
+        // Цитата
+        const quotes = [
+            { text: '"Успех — это сумма маленьких усилий, повторяемых день за днём."', author: 'Роберт Коллиер' },
+            { text: '"Ты не обязан быть великим, чтобы начать, но ты обязан начать, чтобы стать великим."', author: 'Зиг Зиглар' },
+            { text: '"Секрет успеха в том, чтобы начать."', author: 'Марк Твен' },
+            { text: '"Единственный способ сделать великую работу — любить то, что ты делаешь."', author: 'Стив Джобс' },
+            { text: '"Маленькие ежедневные усилия приводят к большим результатам."', author: 'Джон Максвелл' }
+        ];
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('dashQuote').textContent = q.text;
+        document.getElementById('dashQuoteAuthor').textContent = '— ' + q.author;
+    }
+
+    // ============================================================
+    // ПЛАНЕР
+    // ============================================================
+    function renderPlanner() {
+        const grid = document.getElementById('plannerGrid');
+        const subjects = egePlannerData.subjects || {};
+        let html = '';
+        let totalTasks = 0;
+
+        for (const key in subjects) {
+            const subject = subjects[key];
+            const tasks = subject.tasks || [];
+            const completed = tasks.filter(t => t.completed).length;
+            totalTasks += tasks.length;
+
+            html += `
+                <div class="planner-card">
+                    <div class="pc-header">
+                        <span class="pc-title">${subject.icon || '📚'} ${subject.name}</span>
+                        <span style="font-family:'Inter',sans-serif; font-size:0.7rem; color:rgba(26,26,46,0.4);">
+                            ${completed}/${tasks.length} выполнено
+                        </span>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <div style="height:4px; background:rgba(26,26,46,0.06); border-radius:2px; overflow:hidden;">
+                            <div style="height:100%; width:${tasks.length > 0 ? (completed/tasks.length*100) : 0}%; background:${subject.color || '#b35a6c'}; border-radius:2px; transition:width 0.5s ease;"></div>
+                        </div>
+                    </div>
+                    <div id="tasks-${key}">
+            `;
+
+            tasks.forEach((task, i) => {
+                html += `
+                    <div class="task-item">
+                        <div class="task-check">
+                            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="togglePlannerTask('${key}', ${i})">
+                        </div>
+                        <div class="task-info">
+                            <div class="task-text ${task.completed ? 'done' : ''}">${task.note || 'Без заметки'}</div>
+                            <div class="task-date">${task.date || ''} ${task.time || ''}</div>
+                        </div>
+                        <button class="task-delete" onclick="deletePlannerTask('${key}', ${i})"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <div class="planner-form">
+                        <input type="text" id="task-input-${key}" placeholder="Новое занятие...">
+                        <input type="date" id="task-date-${key}" value="${new Date().toISOString().split('T')[0]}">
+                        <button class="planner-btn" onclick="addPlannerTask('${key}')">+</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        grid.innerHTML = html;
+        document.getElementById('plannerBadge').textContent = totalTasks;
+    }
+
+    function addPlannerTask(subject) {
+        const note = document.getElementById(`task-input-${subject}`).value.trim();
+        const date = document.getElementById(`task-date-${subject}`).value;
+        if (!note) { showNotification('⚠️ Введите заметку!'); return; }
+
+        fetch('/api/ege_planner/add_task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, date, time: '', note, topics: [] })
+        }).then(r => r.json()).then(data => {
+            if (data.success) {
+                showNotification('✅ Занятие добавлено!');
+                renderPlanner();
+            }
+        });
+    }
+
+    function togglePlannerTask(subject, index) {
+        fetch('/api/ege_planner/toggle_task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, task_index: index })
+        }).then(r => r.json()).then(data => {
+            if (data.success) renderPlanner();
+        });
+    }
+
+    function deletePlannerTask(subject, index) {
+        if (!confirm('Удалить занятие?')) return;
+        fetch('/api/ege_planner/delete_task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, task_index: index })
+        }).then(r => r.json()).then(data => {
+            if (data.success) renderPlanner();
+        });
+    }
+
+    // ============================================================
+    // КАЛЕНДАРЬ
+    // ============================================================
+    function getWeekDates(offset) {
+        const today = new Date();
+        const start = new Date(today);
+        start.setDate(today.getDate() - today.getDay() + 1 + offset * 7);
+        const dates = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            dates.push(d);
+        }
+        return dates;
+    }
+
+    function renderCalendar() {
+        const dates = getWeekDates(currentCalWeek);
+        const grid = document.getElementById('calGrid');
+        const label = document.getElementById('calWeekLabel');
+
+        const startStr = dates[0].toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+        const endStr = dates[6].toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+        label.textContent = `${startStr} — ${endStr}`;
+
+        const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        const today = new Date();
+        const startHour = 7;
+        const endHour = 23;
+        const cellHeight = 50;
+
+        let html = '';
+
+        // Заголовки
+        html += `<div class="time-slot"></div>`;
+        dates.forEach((date, i) => {
+            const isToday = date.toDateString() === today.toDateString();
+            html += `
+                <div class="day-header ${isToday ? 'today' : ''}">
+                    ${dayNames[i]} <span class="date-num">${date.getDate()}</span>
+                </div>
+            `;
+        });
+
+        // Время
+        for (let hour = startHour; hour <= endHour; hour++) {
+            const timeStr = hour <= 12 ? `${hour}:00` : `${hour-12}:00`;
+            html += `<div class="time-slot">${timeStr}</div>`;
+
+            dates.forEach((date) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const events = egeCalendarData[dateStr] || [];
+                html += `<div class="day-cell" id="cal-cell-${dateStr}-${hour}" data-date="${dateStr}" data-hour="${hour}"></div>`;
+            });
+        }
+
+        grid.innerHTML = html;
+
+        // Добавляем события
+        setTimeout(() => {
+            dates.forEach((date) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const events = egeCalendarData[dateStr] || [];
+
+                events.forEach((event, index) => {
+                    if (event.start && event.end) {
+                        const [startH, startM] = event.start.split(':').map(Number);
+                        const [endH, endM] = event.end.split(':').map(Number);
+                        const startMin = (startH - startHour) * 60 + startM;
+                        const endMin = (endH - startHour) * 60 + endM;
+                        const duration = endMin - startMin;
+
+                        const cell = document.getElementById(`cal-cell-${dateStr}-${startH}`);
+                        if (cell) {
+                            const top = (startMin % 60) / 60 * cellHeight;
+                            const height = duration / 60 * cellHeight;
+
+                            const eventDiv = document.createElement('div');
+                            eventDiv.className = `cal-event ${event.done ? 'done' : ''}`;
+                            eventDiv.style.top = `${top}px`;
+                            eventDiv.style.height = `${Math.max(height, 16)}px`;
+                            eventDiv.style.background = event.color || '#b35a6c';
+                            eventDiv.innerHTML = `
+                                <div class="event-title">${event.student}</div>
+                                <div class="event-time">${event.start}-${event.end}</div>
+                            `;
+                            cell.appendChild(eventDiv);
+                        }
+                    }
+                });
+            });
+        }, 100);
+    }
+
+    function changeCalWeek(delta) {
+        currentCalWeek += delta;
+        renderCalendar();
+    }
+
+    function goCalToday() {
+        currentCalWeek = 0;
+        renderCalendar();
+    }
+
+    // ============================================================
+    // ПРОБНИКИ
+    // ============================================================
+    function renderExams() {
+        const monthContainer = document.getElementById('examMonths');
+        const grid = document.getElementById('examGrid');
+
+        // Месяцы
+        let monthHtml = '';
+        monthsData.forEach((month, i) => {
+            const done = month.exams.filter(e => e.status === 'done').length;
+            monthHtml += `
+                <button class="tab-btn ${i === currentExamMonth ? 'active' : ''}"
+                        onclick="selectExamMonth(${i})" style="padding:6px 16px; font-size:0.75rem;">
+                    ${month.emoji} ${month.name}
+                    <span class="badge-tab">${done}/${month.exams.length}</span>
+                </button>
+            `;
+        });
+        monthContainer.innerHTML = monthHtml;
+
+        // Список пробников
+        const month = monthsData[currentExamMonth];
+        if (!month || month.exams.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <div class="text">В этом месяце нет пробников</div>
+                </div>
+            `;
+            return;
+        }
+
+        let examHtml = '';
+        month.exams.forEach((exam, i) => {
+            const statusLabels = {
+                'done': '<span class="exam-status done">✅ Сдан</span>',
+                'pending': '<span class="exam-status pending">⏳ Ожидается</span>',
+                'failed': '<span class="exam-status failed">❌ Не сдан</span>'
+            };
+            const scoreDisplay = exam.score !== null ? `<span class="exam-score">${exam.score}</span>` : '';
+            const subjectIcons = {
+                'Математика': '📐',
+                'Русский язык': '📖',
+                'Физика': '⚡',
+                'Информатика': '💻'
+            };
+
+            examHtml += `
+                <div class="exam-folder" onclick="editExam(${currentExamMonth}, ${i})">
+                    <div class="folder-color-line" style="background:${exam.color || '#b35a6c'};"></div>
+                    <div class="folder-icon">${subjectIcons[exam.subject] || '📄'}</div>
+                    <div class="folder-name">${exam.subject}</div>
+                    <div class="folder-date">${exam.date}</div>
+                    <div class="folder-status">
+                        ${statusLabels[exam.status] || statusLabels.pending}
+                        ${scoreDisplay}
+                    </div>
+                </div>
+            `;
+        });
+
+        grid.innerHTML = examHtml;
+
+        // Обновляем бейдж
+        let total = 0;
+        monthsData.forEach(m => { total += m.exams.length; });
+        document.getElementById('examsBadge').textContent = total;
+    }
+
+    function selectExamMonth(index) {
+        currentExamMonth = index;
+        renderExams();
+    }
+
+    function editExam(monthIndex, examIndex) {
+        const exam = monthsData[monthIndex].exams[examIndex];
+        const newScore = prompt('Введите баллы (0-100):', exam.score !== null ? exam.score : '');
+        if (newScore === null) return;
+
+        const score = parseInt(newScore);
+        if (isNaN(score) || score < 0 || score > 100) {
+            showNotification('⚠️ Введите число от 0 до 100!');
+            return;
+        }
+
+        const status = score >= 60 ? 'done' : 'failed';
+        exam.score = score;
+        exam.status = status;
+        saveExamData();
+        renderExams();
+        updateDashboard();
+        showNotification('✅ Результат сохранён!');
+    }
+
+    // ============================================================
+    // УВЕДОМЛЕНИЯ
+    // ============================================================
+    function showNotification(message, color = '#b35a6c') {
+        const old = document.querySelector('.notification');
+        if (old) old.remove();
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.style.borderLeftColor = color;
+        notif.textContent = message;
+        document.body.appendChild(notif);
+        setTimeout(() => {
+            notif.classList.add('hide');
+            setTimeout(() => notif.remove(), 500);
+        }, 2500);
+    }
+
+    // ============================================================
+    // ИНИЦИАЛИЗАЦИЯ
+    // ============================================================
+    function init() {
+        loadExamData();
+        updateDashboard();
+        renderPlanner();
+        renderCalendar();
+        renderExams();
+        console.log('✅ ЕГЭ Объединённая страница загружена!');
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

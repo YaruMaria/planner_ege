@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Мои пробники</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Playfair Display', serif;
+            min-height: 100vh;
+            background: url('{{ url_for('static', filename='7.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-custom .btn i { margin-right: 8px; }
+        .nav-custom .btn-outline-success {
+            color: #1a1a2e;
+            border-color: rgba(26,26,46,0.15);
+            font-weight: 600;
+        }
+        .nav-custom .btn-outline-success:hover {
+            background: #b35a6c;
+            color: white;
+            border-color: #b35a6c;
+        }
+        .nav-custom .btn-success {
+            background: #b35a6c;
+            border-color: #b35a6c;
+            color: white;
+            font-weight: 600;
+        }
+        .nav-custom .btn-success:hover {
+            background: #9a4a5a;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+            text-shadow: 0 2px 20px rgba(255,255,255,0.2);
+        }
+        .page-header h1 small {
+            font-size: 0.55rem;
+            opacity: 0.5;
+            font-weight: 400;
+            display: block;
+            color: #1a1a2e;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .stats .stat-item {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            padding: 8px 20px;
+            text-align: center;
+            min-width: 80px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        .stats .stat-item:hover {
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-2px);
+        }
+        .stats .stat-item .num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+        }
+        .stats .stat-item .num.pink { color: #b35a6c; }
+        .stats .stat-item .num.green { color: #2e7d32; }
+        .stats .stat-item .num.gold { color: #e67e22; }
+        .stats .stat-item .num.purple { color: #6c3483; }
+        .stats .stat-item .label {
+            font-size: 0.55rem;
+            color: rgba(26,26,46,0.5);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .months-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .months-tabs .month-tab {
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.06);
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .months-tabs .month-tab:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .months-tabs .month-tab.active {
+            background: rgba(179,90,108,0.25);
+            border-color: #b35a6c;
+            color: #b35a6c;
+            box-shadow: 0 4px 20px rgba(179,90,108,0.15);
+        }
+        .months-tabs .month-tab .emoji { margin-right: 6px; }
+        .months-tabs .month-tab .badge-done {
+            background: rgba(46,125,50,0.15);
+            color: #2e7d32;
+            font-size: 0.6rem;
+            padding: 1px 10px;
+            border-radius: 20px;
+            margin-left: 6px;
+            font-weight: 700;
+        }
+
+        .exams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .exam-folder {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+        }
+        .exam-folder:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.14);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+        .exam-folder .folder-color-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+        }
+        .exam-folder .folder-icon {
+            width: 100%;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .exam-folder .folder-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .exam-folder .folder-icon .emoji-big {
+            font-size: 2rem;
+            opacity: 0.6;
+        }
+        .exam-folder .folder-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 2px;
+        }
+        .exam-folder .folder-date {
+            font-size: 0.65rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .exam-folder .folder-note {
+            font-size: 0.6rem;
+            color: rgba(26,26,46,0.4);
+            font-family: 'Inter', sans-serif;
+            font-style: italic;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .exam-folder .folder-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .exam-folder .folder-status .exam-status {
+            font-size: 0.55rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        .exam-folder .folder-status .exam-status.done {
+            background: rgba(46,125,50,0.12);
+            color: #2e7d32;
+        }
+        .exam-folder .folder-status .exam-status.pending {
+            background: rgba(230,126,34,0.12);
+            color: #e67e22;
+        }
+        .exam-folder .folder-status .exam-status.failed {
+            background: rgba(192,57,43,0.12);
+            color: #c0392b;
+        }
+        .exam-folder .folder-status .exam-score {
+            font-size: 0.8rem;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            color: #b35a6c;
+        }
+
+        .month-header {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .month-header .progress-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: rgba(26,26,46,0.5);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(26,26,46,0.3);
+            grid-column: 1 / -1;
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-state .text { font-size: 0.9rem; font-family: 'Inter', sans-serif; font-weight: 500; }
+
+        .modal-content-custom {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+        .modal-header {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-family: 'Playfair Display', serif;
+        }
+        .modal-header .modal-title {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .modal-footer {
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .modal-body .form-label {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+        }
+        .modal-body .form-control, .modal-body .form-select {
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.06);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            color: #1a1a2e;
+        }
+        .modal-body .form-control:focus, .modal-body .form-select:focus {
+            border-color: #b35a6c;
+            box-shadow: 0 0 0 3px rgba(179,90,108,0.12);
+        }
+        .btn-save {
+            background: #b35a6c;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 28px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .btn-save:hover {
+            background: #9a4a5a;
+            color: white;
+        }
+        .btn-secondary-custom {
+            background: rgba(26,26,46,0.05);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 28px;
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .btn-secondary-custom:hover {
+            background: rgba(26,26,46,0.10);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .exams-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 10px;
+            }
+            .exam-folder {
+                min-height: 130px;
+                padding: 10px 12px;
+            }
+            .exam-folder .folder-icon {
+                height: 45px;
+                margin-bottom: 6px;
+            }
+            .exam-folder .folder-name {
+                font-size: 0.7rem;
+            }
+            .exam-folder .folder-date {
+                font-size: 0.55rem;
+            }
+            .exam-folder .folder-status .exam-status {
+                font-size: 0.45rem;
+                padding: 1px 8px;
+            }
+            .exam-folder .folder-status .exam-score {
+                font-size: 0.65rem;
+            }
+            .exam-folder .folder-note {
+                font-size: 0.5rem;
+            }
+            .months-tabs .month-tab {
+                font-size: 0.7rem;
+                padding: 6px 14px;
+            }
+            .stats .stat-item {
+                padding: 4px 12px;
+                min-width: 60px;
+            }
+            .stats .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .nav-custom .btn {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+            }
+            .page-header h1 {
+                font-size: 1.3rem;
+            }
+            .month-header {
+                font-size: 1rem;
+            }
+            .month-header .progress-text {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Навигация -->
+    <nav class="nav-custom">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits') }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals') }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('ege_planner') }}" class="btn btn-outline-success">
+                <i class="fas fa-rocket"></i> ЕГЭ Планер
+            </a>
+            <a href="{{ url_for('ege_calendar_page') }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-check"></i> ЕГЭ Календарь
+            </a>
+            <a href="{{ url_for('ege_center') }}" class="btn btn-outline-success" style="background: #c66f80; color: white; border-color: #c66f80;">
+                <i class="fas fa-star"></i> ЕГЭ Центр
+            </a>
+            <a href="{{ url_for('sprint') }}" class="btn btn-outline-success">
+    <i class="fas fa-running"></i> Спринт
+</a>
+            <a href="{{ url_for('ege_exams') }}" class="btn btn-success">
+                <i class="fas fa-trophy"></i> Мои пробники
+            </a>
+            <a href="{{ url_for('manage_students') }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <h1>
+            🏆 Мои пробники
+            <small>Нажми на месяц и смотри свои результаты</small>
+        </h1>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="num pink" id="totalExams">0</div>
+                <div class="label">Всего</div>
+            </div>
+            <div class="stat-item">
+                <div class="num green" id="doneExams">0</div>
+                <div class="label">Пройдено</div>
+            </div>
+            <div class="stat-item">
+                <div class="num gold" id="avgScore">0</div>
+                <div class="label">Средний балл</div>
+            </div>
+            <div class="stat-item">
+                <div class="num purple" id="remainingExams">0</div>
+                <div class="label">Осталось</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопки месяцев -->
+    <div class="months-tabs" id="monthsTabs"></div>
+
+    <!-- Список пробников -->
+    <div id="examsContainer">
+        <div class="month-header" id="monthHeader">
+            <span>Выберите месяц</span>
+            <span class="progress-text"></span>
+        </div>
+        <div class="exams-grid" id="examsGrid">
+            <div class="empty-state">
+                <div class="icon">👆</div>
+                <div class="text">Нажми на месяц сверху, чтобы увидеть пробники</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка -->
+<div class="modal fade" id="examModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-pen" style="color:#b35a6c;"></i> Результат пробника</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editExamId" />
+                <input type="hidden" id="editMonthIndex" />
+                <input type="hidden" id="editExamIndex" />
+
+                <div class="mb-3">
+                    <label class="form-label">Предмет</label>
+                    <input type="text" class="form-control" id="editSubject" disabled style="background:#f5f5f5; font-weight:600; color:#1a1a2e;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Дата</label>
+                    <input type="text" class="form-control" id="editDate" disabled style="background:#f5f5f5; font-weight:500; color:#1a1a2e;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Баллы (0-100)</label>
+                    <input type="number" class="form-control" id="editScore" min="0" max="100" placeholder="Введите баллы..." style="font-weight:600;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Статус</label>
+                    <select class="form-select" id="editStatus" style="font-weight:600;">
+                        <option value="done">✅ Сдан</option>
+                        <option value="pending">⏳ Ожидается</option>
+                        <option value="failed">❌ Не сдан</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Заметка</label>
+                    <textarea class="form-control" id="editNote" rows="2" placeholder="Что было на пробнике? Какие сложности?" style="font-weight:400;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn-save" onclick="saveExamResult()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ============================================================
+    // ДАННЫЕ ПРОБНИКОВ (2026-2027)
+    // ============================================================
+    const monthsData = [
+        // 2026 год
+        {
+            id: 'sep',
+            name: 'Сентябрь',
+            emoji: '🍂',
+            year: 2026,
+            exams: [
+                { id: 'sep_1', date: '6 сентября', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_2', date: '7 сентября', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_3', date: '13 сентября', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_4', date: '14 сентября', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_5', date: '20 сентября', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_6', date: '21 сентября', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_7', date: '27 сентября', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'sep_8', date: '28 сентября', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'oct',
+            name: 'Октябрь',
+            emoji: '🎃',
+            year: 2026,
+            exams: [
+                { id: 'oct_1', date: '4 октября', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_2', date: '5 октября', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_3', date: '11 октября', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_4', date: '12 октября', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_5', date: '18 октября', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_6', date: '19 октября', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_7', date: '25 октября', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'oct_8', date: '26 октября', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'nov',
+            name: 'Ноябрь',
+            emoji: '🍁',
+            year: 2026,
+            exams: [
+                { id: 'nov_1', date: '1 ноября', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_2', date: '2 ноября', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_3', date: '8 ноября', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_4', date: '9 ноября', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_5', date: '15 ноября', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_6', date: '16 ноября', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_7', date: '22 ноября', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'nov_8', date: '23 ноября', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'dec',
+            name: 'Декабрь',
+            emoji: '🎄',
+            year: 2026,
+            exams: [
+                { id: 'dec_1', date: '6 декабря', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_2', date: '7 декабря', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_3', date: '13 декабря', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_4', date: '14 декабря', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_5', date: '20 декабря', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_6', date: '21 декабря', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_7', date: '27 декабря', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'dec_8', date: '28 декабря', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        // 2027 год
+        {
+            id: 'jan',
+            name: 'Январь',
+            emoji: '❄️',
+            year: 2027,
+            exams: [
+                { id: 'jan_1', date: '10 января', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_2', date: '11 января', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_3', date: '17 января', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_4', date: '18 января', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_5', date: '24 января', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_6', date: '25 января', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_7', date: '31 января', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'jan_8', date: '31 января', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'feb',
+            name: 'Февраль',
+            emoji: '💕',
+            year: 2027,
+            exams: [
+                { id: 'feb_1', date: '7 февраля', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_2', date: '8 февраля', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_3', date: '14 февраля', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_4', date: '15 февраля', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_5', date: '21 февраля', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_6', date: '22 февраля', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_7', date: '28 февраля', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'feb_8', date: '28 февраля', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'mar',
+            name: 'Март',
+            emoji: '🌸',
+            year: 2027,
+            exams: [
+                { id: 'mar_1', date: '7 марта', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_2', date: '8 марта', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_3', date: '14 марта', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_4', date: '15 марта', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_5', date: '21 марта', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_6', date: '22 марта', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_7', date: '28 марта', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'mar_8', date: '29 марта', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'apr',
+            name: 'Апрель',
+            emoji: '🌿',
+            year: 2027,
+            exams: [
+                { id: 'apr_1', date: '4 апреля', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_2', date: '5 апреля', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_3', date: '11 апреля', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_4', date: '12 апреля', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_5', date: '18 апреля', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_6', date: '19 апреля', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_7', date: '25 апреля', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'apr_8', date: '26 апреля', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        },
+        {
+            id: 'may',
+            name: 'Май',
+            emoji: '🌺',
+            year: 2027,
+            exams: [
+                { id: 'may_1', date: '2 мая', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'may_2', date: '3 мая', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'may_3', date: '9 мая', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'may_4', date: '10 мая', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' },
+                { id: 'may_5', date: '16 мая', subject: 'Математика', color: '#b35a6c', image: '2.png', score: null, status: 'pending', note: '' },
+                { id: 'may_6', date: '17 мая', subject: 'Русский язык', color: '#c66f80', image: '3.png', score: null, status: 'pending', note: '' },
+                { id: 'may_7', date: '23 мая', subject: 'Физика', color: '#4a6644', image: '4.png', score: null, status: 'pending', note: '' },
+                { id: 'may_8', date: '24 мая', subject: 'Информатика', color: '#899464', image: '5.png', score: null, status: 'pending', note: '' }
+            ]
+        }
+    ];
+
+    let currentMonthIndex = 0;
+
+    // ============================================================
+    // ЗАГРУЗКА ИЗ LOCALSTORAGE
+    // ============================================================
+    function loadFromLocalStorage() {
+        const saved = localStorage.getItem('ege_exams_data_v3');
+        if (!saved) return;
+        try {
+            const data = JSON.parse(saved);
+            data.forEach((monthData, mi) => {
+                if (monthsData[mi]) {
+                    monthData.exams.forEach((examData, ei) => {
+                        if (monthsData[mi].exams[ei]) {
+                            monthsData[mi].exams[ei].score = examData.score;
+                            monthsData[mi].exams[ei].status = examData.status;
+                            monthsData[mi].exams[ei].note = examData.note || '';
+                        }
+                    });
+                }
+            });
+        } catch(e) {}
+    }
+
+    function saveToLocalStorage() {
+        const data = monthsData.map(month => ({
+            id: month.id,
+            year: month.year,
+            exams: month.exams.map(e => ({
+                id: e.id,
+                score: e.score,
+                status: e.status,
+                note: e.note || ''
+            }))
+        }));
+        localStorage.setItem('ege_exams_data_v3', JSON.stringify(data));
+    }
+
+    // ============================================================
+    // РЕНДЕР
+    // ============================================================
+    function renderTabs() {
+        const container = document.getElementById('monthsTabs');
+        container.innerHTML = '';
+        monthsData.forEach((month, index) => {
+            const done = month.exams.filter(e => e.status === 'done').length;
+            const total = month.exams.length;
+            const tab = document.createElement('button');
+            tab.className = `month-tab ${index === currentMonthIndex ? 'active' : ''}`;
+            tab.innerHTML = `
+                <span class="emoji">${month.emoji}</span>
+                ${month.name} ${month.year}
+                <span class="badge-done">${done}/${total}</span>
+            `;
+            tab.onclick = () => selectMonth(index);
+            container.appendChild(tab);
+        });
+    }
+
+    function selectMonth(index) {
+        currentMonthIndex = index;
+        renderTabs();
+        renderExams(index);
+        updateStats();
+    }
+
+    function renderExams(index) {
+        const month = monthsData[index];
+        const grid = document.getElementById('examsGrid');
+        const header = document.getElementById('monthHeader');
+
+        const done = month.exams.filter(e => e.status === 'done').length;
+        const total = month.exams.length;
+        const progress = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        header.innerHTML = `
+            <span>${month.emoji} ${month.name} ${month.year}</span>
+            <span class="progress-text">${done}/${total} выполнено (${progress}%)</span>
+        `;
+
+        if (month.exams.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <div class="text">В этом месяце нет пробников</div>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        month.exams.forEach((exam, ei) => {
+            const statusLabels = {
+                'done': '<span class="exam-status done">✅ Сдан</span>',
+                'pending': '<span class="exam-status pending">⏳ Ожидается</span>',
+                'failed': '<span class="exam-status failed">❌ Не сдан</span>'
+            };
+            const scoreDisplay = exam.score !== null ? `<span class="exam-score">${exam.score}</span>` : '';
+            const noteDisplay = exam.note ? `<div class="folder-note">📝 ${exam.note}</div>` : '';
+
+            const imagePath = `/static/${exam.image}`;
+
+            html += `
+                <div class="exam-folder" onclick="openExamModal(${index}, ${ei})">
+                    <div class="folder-color-line" style="background:${exam.color};"></div>
+                    <div class="folder-icon">
+                        <img src="${imagePath}" alt="${exam.subject}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-big\\'>📄</span>';" />
+                    </div>
+                    <div class="folder-name">${exam.subject}</div>
+                    <div class="folder-date">${exam.date}</div>
+                    ${noteDisplay}
+                    <div class="folder-status">
+                        ${statusLabels[exam.status] || statusLabels.pending}
+                        ${scoreDisplay}
+                    </div>
+                </div>
+            `;
+        });
+
+        grid.innerHTML = html;
+    }
+
+    function updateStats() {
+        let total = 0, done = 0, totalScore = 0, scoreCount = 0;
+        monthsData.forEach(month => {
+            month.exams.forEach(e => {
+                total++;
+                if (e.status === 'done') {
+                    done++;
+                    if (e.score !== null) {
+                        totalScore += e.score;
+                        scoreCount++;
+                    }
+                }
+            });
+        });
+        document.getElementById('totalExams').textContent = total;
+        document.getElementById('doneExams').textContent = done;
+        document.getElementById('remainingExams').textContent = total - done;
+        const avg = scoreCount > 0 ? Math.round(totalScore / scoreCount) : 0;
+        document.getElementById('avgScore').textContent = avg;
+    }
+
+    // ============================================================
+    // МОДАЛКА
+    // ============================================================
+    const examModal = new bootstrap.Modal(document.getElementById('examModal'));
+    let editingMonthIndex = 0;
+    let editingExamIndex = 0;
+
+    function openExamModal(monthIndex, examIndex) {
+        editingMonthIndex = monthIndex;
+        editingExamIndex = examIndex;
+        const exam = monthsData[monthIndex].exams[examIndex];
+
+        document.getElementById('editExamId').value = exam.id;
+        document.getElementById('editMonthIndex').value = monthIndex;
+        document.getElementById('editExamIndex').value = examIndex;
+        document.getElementById('editSubject').value = exam.subject;
+        document.getElementById('editDate').value = exam.date;
+        document.getElementById('editScore').value = exam.score !== null ? exam.score : '';
+        document.getElementById('editStatus').value = exam.status;
+        document.getElementById('editNote').value = exam.note || '';
+
+        examModal.show();
+    }
+
+    function saveExamResult() {
+        const monthIndex = parseInt(document.getElementById('editMonthIndex').value);
+        const examIndex = parseInt(document.getElementById('editExamIndex').value);
+        const exam = monthsData[monthIndex].exams[examIndex];
+
+        const score = parseInt(document.getElementById('editScore').value);
+        const status = document.getElementById('editStatus').value;
+        const note = document.getElementById('editNote').value.trim();
+
+        if (isNaN(score) && status === 'done') {
+            alert('Пожалуйста, введите баллы!');
+            return;
+        }
+
+        exam.score = isNaN(score) ? null : score;
+        exam.status = status;
+        exam.note = note;
+
+        saveToLocalStorage();
+        examModal.hide();
+        renderExams(monthIndex);
+        renderTabs();
+        updateStats();
+    }
+
+    // ============================================================
+    // ЗАПУСК
+    // ============================================================
+    loadFromLocalStorage();
+    renderTabs();
+    renderExams(0);
+    updateStats();
+    console.log('✅ Страница пробников загружена!');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ЕГЭ Прогресс</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #e8efe2;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Навигация */
+        .nav-custom {
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #c6d3a0;
+            transition: all 0.6s ease;
+        }
+        .nav-custom .btn {
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .nav-custom .btn i {
+            margin-right: 8px;
+        }
+        .nav-custom .btn-outline-success {
+            color: #5f7f3d;
+            border-color: #c6d3a0;
+        }
+        .nav-custom .btn-outline-success:hover {
+            background: #5f7f3d;
+            color: white;
+        }
+        .nav-custom .btn-success {
+            background: #5f7f3d;
+            border-color: #5f7f3d;
+        }
+
+        /* Карточки предметов */
+        .subject-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            height: 100%;
+        }
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            border-color: #5f7f3d;
+        }
+        .subject-card.active {
+            border-color: #5f7f3d;
+            background: #f0f7ea;
+        }
+        .subject-emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .subject-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #25391a;
+        }
+        .subject-stats {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Таблица заданий */
+        .ege-table-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-top: 20px;
+            display: none;
+        }
+        .ege-table-container.visible {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .table-ege {
+            font-size: 0.9rem;
+        }
+        .table-ege th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #25391a;
+            padding: 12px 8px;
+        }
+        .table-ege td {
+            padding: 10px 8px;
+            vertical-align: middle;
+        }
+
+        /* Ползунок уверенности */
+        .confidence-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100px;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .confidence-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #5f7f3d;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .confidence-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        .confidence-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #5f7f3d;
+            cursor: pointer;
+            border: none;
+        }
+
+        .confidence-value {
+            font-weight: 700;
+            font-size: 0.9rem;
+            min-width: 24px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        /* Цвета для уверенности */
+        .conf-1 { color: #ef4444; }
+        .conf-2 { color: #f97316; }
+        .conf-3 { color: #f59e0b; }
+        .conf-4 { color: #eab308; }
+        .conf-5 { color: #84cc16; }
+        .conf-6 { color: #22c55e; }
+        .conf-7 { color: #10b981; }
+        .conf-8 { color: #059669; }
+        .conf-9 { color: #047857; }
+        .conf-10 { color: #065f46; }
+
+        .solved-badge {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #25391a;
+        }
+
+        .btn-add-solved {
+            background: #5f7f3d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 4px 12px;
+            transition: all 0.3s ease;
+        }
+        .btn-add-solved:hover {
+            background: #4b6a30;
+            transform: scale(1.05);
+        }
+
+        .btn-delete-task {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0 4px;
+        }
+        .btn-delete-task:hover {
+            transform: scale(1.2);
+        }
+
+        .task-number {
+            font-weight: 700;
+            color: #25391a;
+        }
+        .task-topic-input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .task-topic-input:focus {
+            outline: none;
+            background: #f0f7ea;
+        }
+        .task-topic-input::placeholder {
+            color: #bbb;
+        }
+
+        /* Пустые ячейки */
+        .empty-cell {
+            color: #ccc;
+        }
+
+        /* Бэйджи предметов */
+        .subject-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        /* Итальянский стиль */
+        body.style-italian {
+            background: repeating-linear-gradient(90deg,
+                rgb(246,245,240) 0px,
+                rgb(246,245,240) 40px,
+                rgb(205,223,236) 40px,
+                rgb(205,223,236) 80px
+            );
+            font-family: 'Playfair Display', serif;
+        }
+        body.style-italian .nav-custom {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        body.style-italian .nav-custom .btn-outline-success {
+            color: rgb(15, 63, 111);
+            border-color: rgba(15,63,111,0.3);
+        }
+        body.style-italian .nav-custom .btn-outline-success:hover {
+            background: rgb(15, 63, 111);
+            color: white;
+        }
+        body.style-italian .nav-custom .btn-success {
+            background: rgb(15, 63, 111);
+            border: none;
+        }
+        body.style-italian .subject-card {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 24px;
+        }
+        body.style-italian .subject-card:hover {
+            border-color: rgb(15, 63, 111);
+        }
+        body.style-italian .subject-card.active {
+            border-color: rgb(15, 63, 111);
+            background: rgba(15,63,111,0.08);
+        }
+        body.style-italian .ege-table-container {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 24px;
+        }
+        body.style-italian .table-ege th {
+            background: rgba(15,63,111,0.06);
+        }
+        body.style-italian .btn-add-solved {
+            background: rgb(15, 63, 111);
+            border-radius: 40px;
+        }
+        body.style-italian .btn-add-solved:hover {
+            background: rgb(15, 63, 111);
+            opacity: 0.85;
+        }
+        body.style-italian .subject-name {
+            color: #2C2C2C;
+        }
+        body.style-italian .confidence-slider::-webkit-slider-thumb {
+            background: rgb(15, 63, 111);
+        }
+        body.style-italian .confidence-slider::-moz-range-thumb {
+            background: rgb(15, 63, 111);
+        }
+
+        @media (max-width: 768px) {
+            .subject-card { padding: 20px; }
+            .subject-emoji { font-size: 2.5rem; }
+            .confidence-slider { width: 70px; }
+        }
+    </style>
+</head>
+<body class="style-default">
+
+    <!-- ============================================================
+         НАВИГАЦИОННАЯ ПАНЕЛЬ
+         ============================================================ -->
+    <nav class="nav-custom container-fluid">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a href="{{ url_for('index', style=current_style) }}" class="btn btn-outline-success">
+                <i class="fas fa-calendar-alt"></i> Расписание
+            </a>
+            <a href="{{ url_for('manage_habits', style=current_style) }}" class="btn btn-outline-success">
+                <i class="fas fa-fire"></i> Привычки
+            </a>
+            <a href="{{ url_for('manage_goals', style=current_style) }}" class="btn btn-outline-success">
+                <i class="fas fa-bullseye"></i> Цели
+            </a>
+            <a href="{{ url_for('manage_ege', style=current_style) }}" class="btn btn-success">
+                <i class="fas fa-brain"></i> ЕГЭ
+            </a>
+            <a href="{{ url_for('manage_students', style=current_style) }}" class="btn btn-outline-success">
+                <i class="fas fa-user-graduate"></i> Ученики
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4">
+            <i class="fas fa-brain text-success"></i> ЕГЭ Прогресс
+            <small style="font-size:0.6rem;opacity:0.6;display:block;font-weight:300;">
+                Отслеживай подготовку к экзаменам
+            </small>
+        </h1>
+
+        <!-- ============================================================
+             КАРТОЧКИ ПРЕДМЕТОВ
+             ============================================================ -->
+        <div class="row g-4 mb-4">
+            {% set subjects = [
+                ('math', 'Профильная математика', '📐', '#e8f5e9'),
+                ('russian', 'Русский язык', '📖', '#fce4ec'),
+                ('physics', 'Физика', '⚡', '#e3f2fd'),
+                ('informatics', 'Информатика', '💻', '#f3e5f5')
+            ] %}
+
+            {% for key, name, emoji, bg in subjects %}
+            <div class="col-md-3 col-sm-6">
+                <div class="subject-card" data-subject="{{ key }}" onclick="selectSubject('{{ key }}')">
+                    <span class="subject-emoji">{{ emoji }}</span>
+                    <div class="subject-name">{{ name }}</div>
+                    <div class="subject-stats">
+                        {% if ege_data and key in ege_data %}
+                            {{ ege_data[key]|length }} заданий
+                        {% else %}
+                            0 заданий
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- ============================================================
+             ФОРМА ДОБАВЛЕНИЯ ЗАДАНИЯ
+             ============================================================ -->
+        <div class="card mb-4" id="add-task-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-plus-circle text-success"></i> Добавить задание
+                </h5>
+                <form method="POST" class="row g-3 align-items-end" id="add-task-form">
+                    <div class="col-md-3">
+                        <label class="form-label">Предмет</label>
+                        <select class="form-select" name="subject" required>
+                            <option value="math">Профильная математика</option>
+                            <option value="russian">Русский язык</option>
+                            <option value="physics">Физика</option>
+                            <option value="informatics">Информатика</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Номер задания</label>
+                        <input type="number" class="form-control" name="task_number" placeholder="1-27" min="1" max="27" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Уверенность (1-10)</label>
+                        <input type="number" class="form-control" name="confidence" placeholder="5" min="1" max="10" value="5">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Решено задач</label>
+                        <input type="number" class="form-control" name="solved" placeholder="0" min="0" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-plus"></i> Добавить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             ТАБЛИЦА ЗАДАНИЙ
+             ============================================================ -->
+        <div class="ege-table-container" id="ege-table-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 id="subject-title">Выберите предмет</h4>
+                <button class="btn btn-sm btn-outline-secondary" onclick="closeTable()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-ege">
+                    <thead>
+                        <tr>
+                            <th style="width:60px;">№</th>
+                            <th>Тема</th>
+                            <th style="width:150px;">Уверенность</th>
+                            <th style="width:120px;">Решено</th>
+                            <th style="width:120px;">Добавить</th>
+                            <th style="width:40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="ege-tbody">
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                Выберите предмет, чтобы увидеть задания
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============================================================
+        // ДАННЫЕ
+        // ============================================================
+        const egeData = {{ ege_data|tojson|safe }};
+        const currentStyle = '{{ current_style }}';
+
+        // Применяем стиль
+        if (currentStyle === 'italian') {
+            document.body.classList.add('style-italian');
+        }
+
+        // ============================================================
+        // ВЫБОР ПРЕДМЕТА
+        // ============================================================
+        let selectedSubject = null;
+
+        function selectSubject(subject) {
+            selectedSubject = subject;
+
+            // Обновляем активную карточку
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.subject === subject);
+            });
+
+            // Показываем таблицу
+            const container = document.getElementById('ege-table-container');
+            container.classList.add('visible');
+
+            // Обновляем заголовок
+            const names = {
+                'math': 'Профильная математика',
+                'russian': 'Русский язык',
+                'physics': 'Физика',
+                'informatics': 'Информатика'
+            };
+            document.getElementById('subject-title').textContent = names[subject] || subject;
+
+            // Заполняем таблицу
+            renderTable(subject);
+        }
+
+        function closeTable() {
+            document.getElementById('ege-table-container').classList.remove('visible');
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            selectedSubject = null;
+        }
+
+        // ============================================================
+        // ОТРИСОВКА ТАБЛИЦЫ
+        // ============================================================
+        function renderTable(subject) {
+            const tbody = document.getElementById('ege-tbody');
+            const data = egeData[subject] || {};
+
+            // Получаем номера заданий
+            const taskNumbers = Object.keys(data).map(Number).sort((a, b) => a - b);
+
+            // Максимальное количество заданий для каждого предмета
+            const maxTasks = {
+                'math': 18,
+                'russian': 27,
+                'physics': 30,
+                'informatics': 27
+            };
+            const maxTask = maxTasks[subject] || 27;
+
+            if (taskNumbers.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            Нет заданий по этому предмету. Добавьте первое!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            // Показываем все задания от 1 до maxTask
+            for (let i = 1; i <= maxTask; i++) {
+                const task = data[i];
+                const exists = task !== undefined;
+
+                if (exists) {
+                    const confidence = task.confidence || 5;
+                    const solved = task.solved || 0;
+                    const confClass = 'conf-' + Math.min(Math.max(Math.round(confidence), 1), 10);
+
+                    html += `
+                        <tr>
+                            <td class="task-number">${i}</td>
+                            <td>
+                                <input type="text" class="task-topic-input"
+                                       placeholder="Тема задания"
+                                       value="${task.topic || ''}"
+                                       data-subject="${subject}"
+                                       data-task="${i}"
+                                       onchange="updateTopic('${subject}', ${i}, this.value)">
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="range" class="confidence-slider"
+                                           min="1" max="10" value="${confidence}"
+                                           data-subject="${subject}"
+                                           data-task="${i}"
+                                           oninput="updateConfidence('${subject}', ${i}, this.value)">
+                                    <span class="confidence-value ${confClass}">${Math.round(confidence)}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="solved-badge" id="solved-${subject}-${i}">${solved}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <input type="number" class="form-control form-control-sm"
+                                           style="width:60px;" min="0" value="1"
+                                           id="add-input-${subject}-${i}">
+                                    <button class="btn-add-solved"
+                                            onclick="addSolved('${subject}', ${i})">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn-delete-task"
+                                        onclick="deleteTask('${subject}', ${i})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    html += `
+                        <tr style="opacity:0.4;">
+                            <td class="task-number empty-cell">${i}</td>
+                            <td><span class="empty-cell">—</span></td>
+                            <td><span class="empty-cell">—</span></td>
+                            <td><span class="empty-cell">0</span></td>
+                            <td><span class="empty-cell">—</span></td>
+                            <td></td>
+                        </tr>
+                    `;
+                }
+            }
+
+            tbody.innerHTML = html;
+        }
+
+        // ============================================================
+        // ОБНОВЛЕНИЕ ДАННЫХ (API)
+        // ============================================================
+        function updateConfidence(subject, taskNumber, value) {
+            const rounded = Math.round(value);
+            fetch('/update_ege', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subject: subject,
+                    task_number: String(taskNumber),
+                    field: 'confidence',
+                    value: rounded
+                })
+            });
+        }
+
+        function updateTopic(subject, taskNumber, value) {
+            fetch('/update_ege', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subject: subject,
+                    task_number: String(taskNumber),
+                    field: 'topic',
+                    value: value
+                })
+            });
+        }
+
+        function addSolved(subject, taskNumber) {
+            const input = document.getElementById(`add-input-${subject}-${taskNumber}`);
+            const value = parseInt(input.value) || 1;
+
+            if (value > 0) {
+                fetch('/update_ege', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        subject: subject,
+                        task_number: String(taskNumber),
+                        field: 'solved',
+                        value: value
+                    })
+                }).then(() => {
+                    // Обновляем отображение
+                    const badge = document.getElementById(`solved-${subject}-${taskNumber}`);
+                    if (badge) {
+                        const current = parseInt(badge.textContent) || 0;
+                        badge.textContent = current + value;
+                    }
+                    input.value = 1;
+                });
+            }
+        }
+
+        function deleteTask(subject, taskNumber) {
+            if (confirm('Удалить это задание?')) {
+                fetch('/delete_ege_task', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        subject: subject,
+                        task_number: String(taskNumber)
+                    })
+                }).then(() => {
+                    // Перезагружаем таблицу
+                    renderTable(subject);
+                    // Обновляем статистику на карточке
+                    updateSubjectStats(subject);
+                });
+            }
+        }
+
+        function updateSubjectStats(subject) {
+            const data = egeData[subject] || {};
+            const count = Object.keys(data).length;
+            const cards = document.querySelectorAll('.subject-card');
+            cards.forEach(card => {
+                if (card.dataset.subject === subject) {
+                    const stats = card.querySelector('.subject-stats');
+                    if (stats) {
+                        stats.textContent = count + ' заданий';
+                    }
+                }
+            });
+        }
+
+        // ============================================================
+        // ОБРАБОТЧИК ФОРМЫ ДОБАВЛЕНИЯ
+        // ============================================================
+        document.getElementById('add-task-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const subject = formData.get('subject');
+            const taskNumber = formData.get('task_number');
+            const confidence = formData.get('confidence') || 5;
+            const solved = formData.get('solved') || 0;
+
+            // Добавляем задание через обычный POST
+            fetch('/ege', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    subject: subject,
+                    task_number: taskNumber,
+                    confidence: confidence,
+                    solved: solved
+                })
+            }).then(() => {
+                // Обновляем данные
+                location.reload();
+            });
+        });
+
+        // ============================================================
+        // ПРИ ВЫБОРЕ ПРЕДМЕТА ИЗ ФОРМЫ
+        // ============================================================
+        document.querySelector('select[name="subject"]').addEventListener('change', function() {
+            // Можно автоматически открывать таблицу при выборе предмета
+        });
+
+        // Если есть выбранный предмет в URL, открываем его
+        // (можно добавить логику для сохранения состояния)
+    </script>
+
+</body>
+</html>
