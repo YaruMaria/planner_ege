@@ -1,0 +1,518 @@
+{
+  "2026-08-30": [
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "15:30",
+      "end": "16:30",
+      "size": "medium",
+      "comment": "№9",
+      "date": "2026-08-30",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "№14",
+      "date": "2026-08-30",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-08-31": [
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "11:00",
+      "end": "12:30",
+      "size": "medium",
+      "comment": "№16",
+      "date": "2026-08-31",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "12:45",
+      "end": "14:30",
+      "size": "medium",
+      "comment": "№12",
+      "date": "2026-08-31",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-01": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "20:00",
+      "end": "21:15",
+      "size": "medium",
+      "comment": "№3",
+      "date": "2026-09-01",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "21:15",
+      "end": "22:15",
+      "size": "medium",
+      "comment": "Магнитное поле",
+      "date": "2026-09-01",
+      "category": "ЕГЭ",
+      "done": true
+    }
+  ],
+  "2026-09-02": [
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "18:45",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "№14",
+      "date": "2026-09-02",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "20:00",
+      "end": "21:30",
+      "size": "medium",
+      "comment": "№13",
+      "date": "2026-09-02",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-03": [
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "21:15",
+      "end": "23:00",
+      "size": "medium",
+      "comment": "Вектор магнитной индукции. Принцип суперпозиции магнитных полей. Линии магнитной индукции",
+      "date": "2026-09-03",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "20:00",
+      "end": "21:15",
+      "size": "medium",
+      "comment": "№11",
+      "date": "2026-09-03",
+      "category": "ЕГЭ",
+      "done": true
+    }
+  ],
+  "2026-09-04": [
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "18:00",
+      "end": "19:30",
+      "size": "medium",
+      "comment": "№13",
+      "date": "2026-09-04",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "20:00",
+      "end": "22:00",
+      "size": "medium",
+      "comment": "сочинение",
+      "date": "2026-09-04",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-05": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "18:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "№12",
+      "date": "2026-09-05",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "20:00",
+      "end": "21:00",
+      "size": "medium",
+      "comment": "Сила Лоренца. Движение заряженных частиц в поле.",
+      "date": "2026-09-05",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-06": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "12:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "пробник по математике №1",
+      "date": "2026-09-06",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-08": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "11:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "№1 и № 2",
+      "date": "2026-09-08",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "13:15",
+      "end": "15:30",
+      "size": "medium",
+      "comment": "сочинение с нуля",
+      "date": "2026-09-08",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-08",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-09": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "11:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "№3 и №4",
+      "date": "2026-09-09",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "13:15",
+      "end": "15:30",
+      "size": "medium",
+      "comment": "№13 + отработка №9-12",
+      "date": "2026-09-09",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "№14",
+      "date": "2026-09-09",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-10": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "11:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "№5 и №6",
+      "date": "2026-09-10",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "13:15",
+      "end": "15:30",
+      "size": "medium",
+      "comment": "№14",
+      "date": "2026-09-10",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-10",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-11": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "11:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "№7 и №8",
+      "date": "2026-09-11",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "13:15",
+      "end": "15:30",
+      "size": "medium",
+      "comment": "№15",
+      "date": "2026-09-11",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-11",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-09-12": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "11:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "№9 и №10",
+      "date": "2026-09-12",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "13:15",
+      "end": "15:30",
+      "size": "medium",
+      "comment": "№16 и №17",
+      "date": "2026-09-12",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-12",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-10-04": [
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "09:00",
+      "end": "10:00",
+      "size": "medium",
+      "comment": "задачи из бакалавра на силу амера и силу лоренца",
+      "date": "2026-10-04",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "10:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "№7, №11 и №2",
+      "date": "2026-10-04",
+      "category": "ЕГЭ",
+      "done": true
+    }
+  ],
+  "2026-10-05": [
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "09:00",
+      "end": "10:00",
+      "size": "medium",
+      "comment": "№7, №11 и №12",
+      "date": "2026-10-05",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "10:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "Электромагнетизм, эдс - решение задач",
+      "date": "2026-10-05",
+      "category": "ЕГЭ",
+      "done": true
+    }
+  ],
+  "2026-10-06": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "09:00",
+      "end": "10:00",
+      "size": "medium",
+      "comment": "решить 1-ю часть",
+      "date": "2026-10-06",
+      "category": "ЕГЭ",
+      "done": true
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "10:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "отработка №16-20",
+      "date": "2026-10-06",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-10-07": [
+    {
+      "student": "Физика",
+      "subject": "Физика",
+      "color": "#4a6644",
+      "start": "09:00",
+      "end": "10:00",
+      "size": "medium",
+      "comment": "Самоиндукцию и катушки",
+      "date": "2026-10-07",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Информатика",
+      "subject": "Информатика",
+      "color": "#899464",
+      "start": "10:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "отработка №5",
+      "date": "2026-10-07",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ],
+  "2026-10-08": [
+    {
+      "student": "Математика",
+      "subject": "Математика",
+      "color": "#b35a6c",
+      "start": "09:00",
+      "end": "10:00",
+      "size": "medium",
+      "comment": "№4-6",
+      "date": "2026-10-08",
+      "category": "ЕГЭ",
+      "done": false
+    },
+    {
+      "student": "Русский язык",
+      "subject": "Русский язык",
+      "color": "#c66f80",
+      "start": "10:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "№9-13",
+      "date": "2026-10-08",
+      "category": "ЕГЭ",
+      "done": false
+    }
+  ]
+}

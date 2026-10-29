@@ -1,0 +1,42 @@
+{
+  "subjects": {
+    "math": {
+      "name": "Профильная математика",
+      "color": "#b35a6c",
+      "icon": "📐",
+      "tasks": [],
+      "exams": [
+        {
+          "date": "2026-09-06",
+          "score": 35,
+          "max_score": 100
+        }
+      ],
+      "progress": 0
+    },
+    "russian": {
+      "name": "Русский язык",
+      "color": "#c66f80",
+      "icon": "📖",
+      "tasks": [],
+      "exams": [],
+      "progress": 0
+    },
+    "physics": {
+      "name": "Физика",
+      "color": "#4a6644",
+      "icon": "⚡",
+      "tasks": [],
+      "exams": [],
+      "progress": 0
+    },
+    "informatics": {
+      "name": "Информатика",
+      "color": "#899464",
+      "icon": "💻",
+      "tasks": [],
+      "exams": [],
+      "progress": 0
+    }
+  }
+}

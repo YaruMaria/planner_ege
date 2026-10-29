@@ -1,0 +1,1730 @@
+{
+  "2026-08-29": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "10:00",
+      "end": "13:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-08-29",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-01": [
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:20",
+      "end": "17:20",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-01",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "18:00",
+      "end": "19:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-01",
+      "category": "Ученик"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-01",
+      "category": "Дело"
+    },
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "16:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-01",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-03": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:20",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-03",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:20",
+      "end": "16:20",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-03",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "18:00",
+      "end": "19:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-03",
+      "category": "Ученик"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-03",
+      "category": "Дело"
+    }
+  ],
+  "2026-08-31": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:20",
+      "size": "large",
+      "comment": "",
+      "date": "2026-08-31",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:20",
+      "end": "16:20",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-08-31",
+      "category": "Другое"
+    },
+    {
+      "student": "мыслитель",
+      "subject": "русский язык егэ",
+      "color": "#b8d0a3",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-08-31",
+      "category": "Дело"
+    }
+  ],
+  "2026-09-02": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "14:20",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-02",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "14:20",
+      "end": "15:20",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-02",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-02",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-04": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:20",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-04",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:20",
+      "end": "16:20",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-04",
+      "category": "Другое"
+    }
+  ],
+  "2026-09-06": [
+    {
+      "student": "пение",
+      "subject": "церковное пение",
+      "color": "#d7dab3",
+      "start": "12:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-06",
+      "category": "Ученик"
+    },
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-06",
+      "category": "Ученик"
+    }
+  ],
+  "2026-08-30": [
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-08-30",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-05": [
+    {
+      "student": "мелания",
+      "subject": "сольфеджио",
+      "color": "#f6b8c0",
+      "start": "12:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-05",
+      "category": "Ученик"
+    },
+    {
+      "student": "саша",
+      "subject": "сольфеджио",
+      "color": "#b8c99e",
+      "start": "11:00",
+      "end": "12:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-05",
+      "category": "Ученик"
+    },
+    {
+      "student": "алина",
+      "subject": "сольфеджио",
+      "color": "#a0525a",
+      "start": "10:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-05",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-07": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-07",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-07",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-07",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-08": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-08",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-08",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-08",
+      "category": "Дело"
+    }
+  ],
+  "2026-09-09": [
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "14:00",
+      "end": "15:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-09",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-09",
+      "category": "Ученик"
+    },
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "10:30",
+      "end": "11:30",
+      "size": "medium",
+      "comment": "врач - забор крови",
+      "date": "2026-09-09",
+      "category": "Другое"
+    }
+  ],
+  "2026-09-10": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-10",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-10",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-10",
+      "category": "Дело"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-10",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-11": [
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-11",
+      "category": "Другое"
+    },
+    {
+      "student": "мыслитель",
+      "subject": "русский язык егэ",
+      "color": "#b8d0a3",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-11",
+      "category": "Дело"
+    },
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "10:45",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "эндокринолог",
+      "date": "2026-09-11",
+      "category": "Другое"
+    },
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "11:12",
+      "end": "12:00",
+      "size": "medium",
+      "comment": "выписка",
+      "date": "2026-09-11",
+      "category": "Другое"
+    }
+  ],
+  "2026-09-12": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "09:00",
+      "end": "10:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-12",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-13": [
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-13",
+      "category": "Ученик"
+    },
+    {
+      "student": "пение",
+      "subject": "церковное пение",
+      "color": "#d7dab3",
+      "start": "11:00",
+      "end": "12:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-13",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-15": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-15",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-15",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-15",
+      "category": "Дело"
+    }
+  ],
+  "2026-09-16": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "14:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-16",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "14:00",
+      "end": "15:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-16",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-16",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-17": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-17",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-17",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-17",
+      "category": "Дело"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-17",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-18": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-18",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-18",
+      "category": "Другое"
+    },
+    {
+      "student": "мыслитель",
+      "subject": "русский язык егэ",
+      "color": "#b8d0a3",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-18",
+      "category": "Дело"
+    }
+  ],
+  "2026-09-14": [
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-14",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-21": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-21",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-21",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-21",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-22": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-22",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-22",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-22",
+      "category": "Дело"
+    },
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "08:00",
+      "end": "08:30",
+      "size": "medium",
+      "comment": "кровь - троицк",
+      "date": "2026-09-22",
+      "category": "Другое"
+    },
+    {
+      "student": "мелания",
+      "subject": "сольфеджио",
+      "color": "#f6b8c0",
+      "start": "18:30",
+      "end": "19:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-22",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-23": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-23",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-23",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-23",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-24": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:35",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-24",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-24",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-24",
+      "category": "Ученик"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-24",
+      "category": "Дело"
+    }
+  ],
+  "2026-09-25": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-25",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-25",
+      "category": "Другое"
+    },
+    {
+      "student": "мыслитель",
+      "subject": "русский язык егэ",
+      "color": "#b8d0a3",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-25",
+      "category": "Дело"
+    },
+    {
+      "student": "саша",
+      "subject": "сольфеджио",
+      "color": "#b8c99e",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-25",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-26": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "09:00",
+      "end": "11:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-26",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "11:50",
+      "end": "12:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-26",
+      "category": "Другое"
+    },
+    {
+      "student": "алиса",
+      "subject": "сольфеджио",
+      "color": "#a0525a",
+      "start": "13:00",
+      "end": "14:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-26",
+      "category": "Ученик"
+    },
+    {
+      "student": "мелания",
+      "subject": "сольфеджио",
+      "color": "#f6b8c0",
+      "start": "14:00",
+      "end": "15:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-26",
+      "category": "Ученик"
+    },
+    {
+      "student": "дви",
+      "subject": "математика",
+      "color": "#3b5235",
+      "start": "16:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-26",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-27": [
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-27",
+      "category": "Ученик"
+    },
+    {
+      "student": "пение",
+      "subject": "церковное пение",
+      "color": "#d7dab3",
+      "start": "12:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-27",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-19": [
+    {
+      "student": "алиса",
+      "subject": "сольфеджио",
+      "color": "#a0525a",
+      "start": "12:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-19",
+      "category": "Ученик"
+    },
+    {
+      "student": "мелания",
+      "subject": "сольфеджио",
+      "color": "#f6b8c0",
+      "start": "13:00",
+      "end": "14:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-19",
+      "category": "Ученик"
+    },
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "стоматолог",
+      "date": "2026-09-19",
+      "category": "Другое"
+    }
+  ],
+  "2026-09-28": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-28",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-28",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-28",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-29": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-29",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-29",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-29",
+      "category": "Дело"
+    },
+    {
+      "student": "мелания",
+      "subject": "сольфеджио",
+      "color": "#f6b8c0",
+      "start": "18:30",
+      "end": "19:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-29",
+      "category": "Ученик"
+    }
+  ],
+  "2026-09-30": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "14:45",
+      "size": "large",
+      "comment": "",
+      "date": "2026-09-30",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-30",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-09-30",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-01": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:30",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-01",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-01",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-01",
+      "category": "Ученик"
+    },
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "08:40",
+      "end": "09:40",
+      "size": "medium",
+      "comment": "кровь - троицк в 8:40",
+      "date": "2026-10-01",
+      "category": "Другое"
+    }
+  ],
+  "2026-10-02": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "14:45",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-02",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-02",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-02",
+      "category": "Дело"
+    },
+    {
+      "student": "саша",
+      "subject": "сольфеджио",
+      "color": "#b8c99e",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-02",
+      "category": "Ученик"
+    },
+    {
+      "student": "мыслитель",
+      "subject": "русский язык егэ",
+      "color": "#b8d0a3",
+      "start": "18:30",
+      "end": "19:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-02",
+      "category": "Дело"
+    }
+  ],
+  "2026-10-03": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "09:30",
+      "end": "11:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-03",
+      "category": "Ученик"
+    },
+    {
+      "student": "алиса",
+      "subject": "сольфеджио",
+      "color": "#a0525a",
+      "start": "13:00",
+      "end": "14:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-03",
+      "category": "Ученик"
+    },
+    {
+      "student": "мелания",
+      "subject": "сольфеджио",
+      "color": "#f6b8c0",
+      "start": "14:00",
+      "end": "15:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-03",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "11:00",
+      "end": "12:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-03",
+      "category": "Другое"
+    }
+  ],
+  "2026-10-04": [
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-04",
+      "category": "Ученик"
+    },
+    {
+      "student": "пение",
+      "subject": "церковное пение",
+      "color": "#d7dab3",
+      "start": "12:00",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-04",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-05": [
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "08:30",
+      "end": "13:00",
+      "size": "medium",
+      "comment": "зубной",
+      "date": "2026-10-05",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-05",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-06": [
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-06",
+      "category": "Дело"
+    },
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "16:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-06",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-06",
+      "category": "Другое"
+    }
+  ],
+  "2026-10-08": [
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-08",
+      "category": "Дело"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-08",
+      "category": "Ученик"
+    },
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "16:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-08",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-08",
+      "category": "Другое"
+    }
+  ],
+  "2026-10-07": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-07",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-07",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-07",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-09": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-09",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-09",
+      "category": "Другое"
+    }
+  ],
+  "2026-10-10": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "09:00",
+      "end": "11:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-10",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "11:00",
+      "end": "12:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-10",
+      "category": "Другое"
+    },
+    {
+      "student": "дви",
+      "subject": "математика",
+      "color": "#3b5235",
+      "start": "16:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-10",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-11": [
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-11",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-16": [
+    {
+      "student": "информатика егэ",
+      "subject": "иныорматика егэ",
+      "color": "#5a7a4a",
+      "start": "18:30",
+      "end": "19:30",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-16",
+      "category": "Ученик"
+    },
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-16",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-16",
+      "category": "Другое"
+    },
+    {
+      "student": "мыслитель",
+      "subject": "русский язык егэ",
+      "color": "#b8d0a3",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-16",
+      "category": "Дело"
+    }
+  ],
+  "2026-10-12": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "16:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-12",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-12",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-12",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-13": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "16:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-13",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "16:00",
+      "end": "17:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-13",
+      "category": "Другое"
+    },
+    {
+      "student": "автошкола",
+      "subject": "доп.занятия",
+      "color": "#ece3d2",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-13",
+      "category": "Дело"
+    }
+  ],
+  "2026-10-14": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-14",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "15:00",
+      "end": "16:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-14",
+      "category": "Другое"
+    },
+    {
+      "student": "алена математика",
+      "subject": "математика егэ",
+      "color": "#769455",
+      "start": "17:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-14",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-15": [
+    {
+      "student": "врач",
+      "subject": "врач",
+      "color": "#899464",
+      "start": "08:00",
+      "end": "15:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-15",
+      "category": "Другое"
+    },
+    {
+      "student": "физик",
+      "subject": "физика егэ",
+      "color": "#f4c7d0",
+      "start": "19:00",
+      "end": "20:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-15",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-17": [
+    {
+      "student": "школа",
+      "subject": "школа",
+      "color": "#c66f80",
+      "start": "09:00",
+      "end": "11:00",
+      "size": "large",
+      "comment": "",
+      "date": "2026-10-17",
+      "category": "Ученик"
+    },
+    {
+      "student": "дорога домой",
+      "subject": "другое",
+      "color": "#9faa74",
+      "start": "11:00",
+      "end": "12:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-17",
+      "category": "Другое"
+    },
+    {
+      "student": "дви",
+      "subject": "математика",
+      "color": "#3b5235",
+      "start": "16:00",
+      "end": "18:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-17",
+      "category": "Ученик"
+    }
+  ],
+  "2026-10-18": [
+    {
+      "student": "храм",
+      "subject": "храм",
+      "color": "#e8a8a8",
+      "start": "09:00",
+      "end": "11:00",
+      "size": "medium",
+      "comment": "",
+      "date": "2026-10-18",
+      "category": "Ученик"
+    }
+  ]
+}
